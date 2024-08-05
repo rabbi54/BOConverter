@@ -2,7 +2,6 @@ package utils.serializers;
 
 import utils.interfaces.Serializer;
 
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 
 public class StringSerializer implements Serializer<String> {

@@ -42,11 +42,7 @@ public class ArraySerializer<T> implements Serializer<T> {
     @Override
     public T deserialize(byte[] data, AnnotationDataClass dataClass) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
-
-        int elementsCount = dataClass.length / dataClass.length;
-        @SuppressWarnings("unchecked")
-        ArrayList<T> arrayList = new ArrayList<>(elementsCount);
-
+        ArrayList<T> arrayList = new ArrayList<>();
         while (buffer.hasRemaining()) {
             int elementLength = dataClass.length;
             byte[] bytes = new byte[elementLength];
