@@ -1,24 +1,14 @@
 package utils.serializers;
 
-public class ByteSerializerDataClass {
-    byte[] data;
+public class AnnotationDataClass {
     Class<?> type;
     byte identifier;
     int length;
 
-    public ByteSerializerDataClass(byte[] data, Class<?> type, byte identifier, int length) {
-        this.data = data;
+    public AnnotationDataClass(Class<?> type, byte identifier, int length) {
         this.type = type;
         this.identifier = identifier;
         this.length = length;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
     }
 
     public Class<?> getType() {

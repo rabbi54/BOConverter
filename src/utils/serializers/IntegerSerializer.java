@@ -14,8 +14,8 @@ public class IntegerSerializer implements Serializer<Integer> {
     }
 
     @Override
-    public Integer deserialize(ByteSerializerDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(dataClass.data);
+    public Integer deserialize(byte[] data, AnnotationDataClass dataClass) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
         return buffer.getInt();
     }
 

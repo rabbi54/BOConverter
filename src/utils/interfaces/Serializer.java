@@ -1,10 +1,13 @@
 package utils.interfaces;
 
-import utils.serializers.ByteSerializerDataClass;
+import utils.serializers.AnnotationDataClass;
 
 public interface Serializer<T> {
     byte[] serialize(T value);
-    T deserialize(ByteSerializerDataClass byteSerializerDataClass);
+    default byte[] serialize(T value, AnnotationDataClass dataClass) {
+        return serialize(value);
+    }
+    T deserialize(byte[] data, AnnotationDataClass dataClass);
     Class<T> getType();
 }
 

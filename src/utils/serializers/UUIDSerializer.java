@@ -17,8 +17,8 @@ public class UUIDSerializer implements Serializer<UUID> {
     }
 
     @Override
-    public UUID deserialize(ByteSerializerDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(dataClass.data);
+    public UUID deserialize(byte[] data, AnnotationDataClass dataClass) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
         long mostSigBits = buffer.getLong();
         long leastSigBits = buffer.getLong();
         return new UUID(mostSigBits, leastSigBits);

@@ -5,9 +5,7 @@ import utils.interfaces.Serializer;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ObjectSerializer {
 
@@ -32,12 +30,32 @@ public class ObjectSerializer {
             if (field.isAnnotationPresent(ByteSerialize.class)) {
                 field.setAccessible(true);
                 ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
-                Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.type());
+                if (annotation.type() == ArrayList.class) {
+                    Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.innerType());
+                    AnnotationDataClass annotationDataClass = new AnnotationDataClass(
+                            annotation.type(),
+                            annotation.identifier(),
+                            annotation.length()
+                    );
 
-                if (serializer != null) {
-                    byte[] serializedData = serializer.serialize(field.get(object));
+                    ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
+                    byte[] serializedData = arraySerializer.serialize(field.get(object), annotationDataClass);
                     buffer.put(annotation.identifier());
                     buffer.put(serializedData);
+                }
+                else {
+                    Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.type());
+                    AnnotationDataClass annotationDataClass = new AnnotationDataClass(
+                            annotation.type(),
+                            annotation.identifier(),
+                            annotation.length()
+                    );
+
+                    if (serializer != null) {
+                        byte[] serializedData = serializer.serialize(field.get(object), annotationDataClass);
+                        buffer.put(annotation.identifier());
+                        buffer.put(serializedData);
+                    }
                 }
             }
         }
@@ -54,25 +72,34 @@ public class ObjectSerializer {
 
         while (buffer.hasRemaining()) {
             byte typeId = buffer.get();
+            Object deserializedValue;
             ByteSerialize byteSerialize = getAnnotationFromIdentifier(typeId);
             if (byteSerialize == null) {
                 return null;
             }
+
             int length = byteSerialize.length();
             if (length == 0) {
                 length = buffer.getInt();
             }
-
-            ByteSerializerDataClass dataClass = new ByteSerializerDataClass(
-                    getBytes(buffer, length),
+            AnnotationDataClass annotationDataClass = new AnnotationDataClass(
                     byteSerialize.type(),
                     byteSerialize.identifier(),
                     length
-                    );
+            );
 
-            Serializer<?> serializer = getSerializer(byteSerialize.type());
-            Object deserializedValue = serializer.deserialize(dataClass);
-            Field field = findFieldByIdentifier(clazz, dataClass.identifier);
+            if (byteSerialize.type() == ArrayList.class) {
+                int size = buffer.getInt();
+                Serializer<Object> serializer = (Serializer<Object>) serializers.get(byteSerialize.innerType());
+                ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
+                deserializedValue = arraySerializer.deserialize(getBytes(buffer, size), annotationDataClass);
+            }
+            else {
+                Serializer<?> serializer = getSerializer(byteSerialize.type());
+                deserializedValue = serializer.deserialize(getBytes(buffer, length), annotationDataClass);
+            }
+
+            Field field = findFieldByIdentifier(clazz, annotationDataClass.identifier);
             if (field != null) {
                 field.setAccessible(true);
                 field.set(object, deserializedValue);
@@ -81,7 +108,7 @@ public class ObjectSerializer {
         return object;
     }
 
-    private byte[] getBytes(ByteBuffer buffer, int length) {
+    public static byte[] getBytes(ByteBuffer buffer, int length) {
         byte[] bytes = new byte[length];
         buffer.get(bytes);
         return bytes;

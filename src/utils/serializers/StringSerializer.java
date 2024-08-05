@@ -18,8 +18,8 @@ public class StringSerializer implements Serializer<String> {
     }
 
     @Override
-    public String deserialize(ByteSerializerDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(dataClass.data);
+    public String deserialize(byte[] data, AnnotationDataClass dataClass) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
         int stringLen = dataClass.length;
         byte[] stringBytes = new byte[stringLen];
         buffer.get(stringBytes, 0, stringLen);

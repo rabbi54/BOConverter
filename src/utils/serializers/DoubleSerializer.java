@@ -13,8 +13,8 @@ public class DoubleSerializer implements Serializer<Double> {
     }
 
     @Override
-    public Double deserialize(ByteSerializerDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(dataClass.data);
+    public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
         return buffer.getDouble();
     }
 

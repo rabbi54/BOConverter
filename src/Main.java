@@ -2,6 +2,7 @@ import models.Food;
 import models.ZoneType;
 import utils.serializers.ObjectSerializer;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -12,6 +13,11 @@ public class Main {
         food.setFoodName("Alu vorta");
         food.setFoodUUID(new UUID(12, 12));
         food.setFoodAmount(19.89);
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(1.1);
+        list.add(2.2);
+        list.add(3.3);
+        food.setArrayList(list);
 
         ObjectSerializer objectSerializer = new ObjectSerializer(food);
         byte[] serializedFood = objectSerializer.serialize();
@@ -22,6 +28,10 @@ public class Main {
                     + " " + deserializedFood.getFoodName() + " " + deserializedFood.getFoodUUID()
                     + " " + deserializedFood.getFoodAmount()
         );
+
+        for (int i = 0; i < deserializedFood.getArrayList().size(); i++) {
+            System.out.println(deserializedFood.getArrayList().get(i));
+        }
 
         ZoneType zoneType = new ZoneType();
         zoneType.setMaxValue(20);

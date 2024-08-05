@@ -2,6 +2,7 @@ package models;
 
 import utils.interfaces.ByteSerialize;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Food {
@@ -37,6 +38,14 @@ public class Food {
         this.foodAmount = foodAmount;
     }
 
+    public ArrayList<Double> getArrayList() {
+        return arrayList;
+    }
+
+    public void setArrayList(ArrayList<Double> arrayList) {
+        this.arrayList = arrayList;
+    }
+
     @ByteSerialize(type = String.class, identifier = 0x10)
     String foodName;
 
@@ -48,4 +57,7 @@ public class Food {
 
     @ByteSerialize(type = Double.class, identifier = 0x12, length = 8)
     Double foodAmount;
+
+    @ByteSerialize(type = ArrayList.class, identifier = 0x13, length = 8, innerType = Double.class)
+    ArrayList<Double> arrayList;
 }
