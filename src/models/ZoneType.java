@@ -2,6 +2,7 @@ package models;
 
 import utils.interfaces.ByteSerialize;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class ZoneType {
@@ -14,6 +15,9 @@ public class ZoneType {
 
     @ByteSerialize(type= UUID.class, identifier = 0x75, length = 16)
     UUID uuid;
+
+    @ByteSerialize(type = ArrayList.class, identifier = 0x12, length = 3, innerType = String.class)
+    ArrayList<String> zones;
 
     public Integer getMaxValue() {
         return maxValue;
@@ -37,5 +41,13 @@ public class ZoneType {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public ArrayList<String> getZones() {
+        return zones;
+    }
+
+    public void setZones(ArrayList<String> zones) {
+        this.zones = zones;
     }
 }

@@ -37,6 +37,12 @@ public class Main {
         zoneType.setMaxValue(20);
         zoneType.setMinValue(10);
         zoneType.setUuid(new UUID(12631, 21782));
+        ArrayList<String> zones = new ArrayList<>();
+        zones.add("Max");
+        zones.add("Min");
+        zones.add("Sem");
+        zoneType.setZones(zones);
+
 
         objectSerializer = new ObjectSerializer(zoneType);
         byte[] serializedZone = objectSerializer.serialize();
@@ -46,5 +52,9 @@ public class Main {
         System.out.println("Deserialized Zone: " + deserializedZone.getMaxValue()
                 + " " + deserializedZone.getMinValue() + " " + deserializedZone.getUuid()
         );
+
+        for (int i = 0; i < deserializedZone.getZones().size(); i++) {
+            System.out.println(deserializedZone.getZones().get(i));
+        }
     }
 }
