@@ -14,10 +14,10 @@ public class ObjectSerializer {
     public ObjectSerializer() {}
 
     static {
-        serializers.put(Integer.class, new IntegerSerializer());
-        serializers.put(UUID.class, new UUIDSerializer());
-        serializers.put(String.class, new StringSerializer());
-        serializers.put(Double.class, new DoubleSerializer());
+        serializers.put(IntegerSerializer.class, new IntegerSerializer());
+        serializers.put(UUIDSerializer.class, new UUIDSerializer());
+        serializers.put(StringSerializer.class, new StringSerializer());
+        serializers.put(DoubleSerializer.class, new DoubleSerializer());
     }
 
     public byte[] serialize(Object object) throws IllegalAccessException {
@@ -41,7 +41,7 @@ public class ObjectSerializer {
             return;
         }
         AnnotationDataClass annotationDataClass = getAnnotationDataClass(annotation);
-        if (annotation.type() == ArrayList.class) {
+        if (annotation.type() == ArraySerializer.class) {
             Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.innerType());
             ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
             byte[] serializedData = arraySerializer.serialize(field.get(object), annotationDataClass);
@@ -91,7 +91,7 @@ public class ObjectSerializer {
 
     private Object getObject(ByteSerialize byteSerialize, ByteBuffer buffer, AnnotationDataClass annotationDataClass, int length) {
         Object deserializedValue;
-        if (byteSerialize.type() == ArrayList.class) {
+        if (byteSerialize.type() == ArraySerializer.class) {
             if (annotationDataClass.length != 0) {
                     length = buffer.getInt();
             }

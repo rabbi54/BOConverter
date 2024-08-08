@@ -1,22 +1,26 @@
 package models;
 
 import utils.interfaces.ByteSerialize;
+import utils.serializers.ArraySerializer;
+import utils.serializers.IntegerSerializer;
+import utils.serializers.StringSerializer;
+import utils.serializers.UUIDSerializer;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class ZoneType {
 
-    @ByteSerialize(type=Integer.class, identifier = 0x10, length = 4)
+    @ByteSerialize(type= IntegerSerializer.class, identifier = 0x10, length = 4)
     Integer maxValue;
 
-    @ByteSerialize(type=Integer.class, identifier = 0x11, length = 4)
+    @ByteSerialize(type=IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer minValue;
 
-    @ByteSerialize(type= UUID.class, identifier = 0x75, length = 16)
+    @ByteSerialize(type= UUIDSerializer.class, identifier = 0x75, length = 16)
     UUID uuid;
 
-    @ByteSerialize(type = ArrayList.class, identifier = 0x12, length = 3, innerType = String.class)
+    @ByteSerialize(type = ArraySerializer.class, identifier = 0x12, length = 3, innerType = StringSerializer.class)
     ArrayList<String> zones;
 
     public Integer getMaxValue() {

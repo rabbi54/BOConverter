@@ -1,6 +1,7 @@
 package models;
 
 import utils.interfaces.ByteSerialize;
+import utils.serializers.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -46,18 +47,18 @@ public class Food {
         this.arrayList = arrayList;
     }
 
-    @ByteSerialize(type = String.class, identifier = 0x10)
+    @ByteSerialize(type = StringSerializer.class, identifier = 0x10)
     String foodName;
 
-    @ByteSerialize(type = UUID.class, identifier = 0x75, length = 16)
+    @ByteSerialize(type = UUIDSerializer.class, identifier = 0x75, length = 16)
     UUID foodUUID;
 
-    @ByteSerialize(type = Integer.class, identifier = 0x11, length = 4)
+    @ByteSerialize(type = IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer foodType;
 
-    @ByteSerialize(type = Double.class, identifier = 0x12, length = 8)
+    @ByteSerialize(type = DoubleSerializer.class, identifier = 0x12, length = 8)
     Double foodAmount;
 
-    @ByteSerialize(type = ArrayList.class, identifier = 0x13, length = 8, innerType = Double.class)
+    @ByteSerialize(type = ArraySerializer.class, identifier = 0x13, length = 8, innerType = DoubleSerializer.class)
     ArrayList<Double> arrayList;
 }
