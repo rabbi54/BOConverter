@@ -146,17 +146,14 @@ public class ObjectSerializer {
     private Object getObject(ByteSerialize byteSerialize, ByteBuffer buffer, AnnotationDataClass annotationDataClass, int length) {
         Object deserializedValue;
         if (byteSerialize.type() == ArraySerializer.class) {
-            if (annotationDataClass.length != 0) {
-                length = buffer.getInt();
-            }
             @SuppressWarnings("unchecked")
             Serializer<Object> serializer = (Serializer<Object>) serializers.get(byteSerialize.innerType());
             ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
             deserializedValue = arraySerializer.deserialize(getBytes(buffer, length), annotationDataClass);
         }
         else {
-            Serializer<?> serializer = getSerializer(byteSerialize.type());
             annotationDataClass.setLength(length);
+            Serializer<?> serializer = getSerializer(byteSerialize.type());
             deserializedValue = serializer.deserialize(getBytes(buffer, length), annotationDataClass);
         }
         return deserializedValue;
@@ -207,8 +204,8 @@ public class ObjectSerializer {
 
     private int getLength(ByteSerialize byteSerialize, ByteBuffer buffer) {
         int length = byteSerialize.length();
-        if (length == 0) {
-            length = buffer.getInt(); // for string-like objects.
+        if (length == 0 || byteSerialize.type() == ArraySerializer.class) { // contains variable length objects
+            length = buffer.getInt(); // for string reads size of the strings, for array reads total bytes in the array
         }
         return length;
     }

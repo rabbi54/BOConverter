@@ -20,7 +20,7 @@ public class ZoneType {
     @ByteSerialize(type= UUIDSerializer.class, identifier = 0x75, length = 16)
     UUID uuid;
 
-    @ByteSerialize(type = ArraySerializer.class, identifier = 0x12, length = 3, innerType = StringSerializer.class)
+    @ByteSerialize(type = ArraySerializer.class, identifier = 0x12, length = 0, innerType = StringSerializer.class)
     ArrayList<String> zones;
 
     public Integer getMaxValue() {

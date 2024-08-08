@@ -66,21 +66,27 @@ public class ArraySerializer<T> implements Serializer<T> {
     public T deserialize(byte[] data, AnnotationDataClass dataClass) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         ArrayList<T> arrayList = new ArrayList<>();
+        AnnotationDataClass newDataClass = new AnnotationDataClass(
+                dataClass.getType(),
+                dataClass.getIdentifier(),
+                dataClass.getLength()
+        );
         while (buffer.hasRemaining()) {
-            int elementLength = getElementLength(dataClass, buffer);
+            int elementLength = getElementLength(dataClass, newDataClass, buffer);
             byte[] bytes = new byte[elementLength];
             buffer.get(bytes);
-            T element = elementSerializer.deserialize(bytes, dataClass);
+            T element = elementSerializer.deserialize(bytes, newDataClass);
             arrayList.add(element);
         }
 
         return (T) arrayList;
     }
 
-    private int getElementLength(AnnotationDataClass dataClass, ByteBuffer buffer) {
+    private int getElementLength(AnnotationDataClass dataClass, AnnotationDataClass newDataClass, ByteBuffer buffer) {
         int elementLength = dataClass.length;
         if (elementLength == 0) {
             elementLength = buffer.getInt();
+            newDataClass.setLength(elementLength);
         }
         return elementLength;
     }
