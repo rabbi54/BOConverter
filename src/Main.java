@@ -19,8 +19,8 @@ public class Main {
         list.add(3.3);
         food.setArrayList(list);
 
-        ObjectSerializer objectSerializer = new ObjectSerializer(food);
-        byte[] serializedFood = objectSerializer.serialize();
+        ObjectSerializer objectSerializer = new ObjectSerializer();
+        byte[] serializedFood = objectSerializer.serialize(food);
         System.out.println("Serialized Food: " + java.util.Arrays.toString(serializedFood));
 
         Food deserializedFood = (Food) objectSerializer.deserialize(serializedFood, Food.class);
@@ -44,8 +44,8 @@ public class Main {
         zoneType.setZones(zones);
 
 
-        objectSerializer = new ObjectSerializer(zoneType);
-        byte[] serializedZone = objectSerializer.serialize();
+        objectSerializer = new ObjectSerializer();
+        byte[] serializedZone = objectSerializer.serialize(zoneType);
         System.out.println("Serialized Zone: " + java.util.Arrays.toString(serializedZone));
 
         ZoneType deserializedZone = (ZoneType) objectSerializer.deserialize(serializedZone, ZoneType.class);

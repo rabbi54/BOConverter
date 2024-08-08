@@ -10,11 +10,8 @@ import java.util.*;
 public class ObjectSerializer {
 
     private static final Map<Class<?>, Serializer<?>> serializers = new HashMap<>();
-    private final Object object;
 
-    public ObjectSerializer(Object object) {
-        this.object = object;
-    }
+    public ObjectSerializer() {}
 
     static {
         serializers.put(Integer.class, new IntegerSerializer());
@@ -23,14 +20,14 @@ public class ObjectSerializer {
         serializers.put(Double.class, new DoubleSerializer());
     }
 
-    public byte[] serialize() throws IllegalAccessException {
+    public byte[] serialize(Object object) throws IllegalAccessException {
         ByteBuffer buffer = ByteBuffer.allocate(1024); // Assume 1024 bytes is enough for serialization
 
-        for (Field field : this.object.getClass().getDeclaredFields()) {
+        for (Field field : object.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(ByteSerialize.class)) {
                 field.setAccessible(true);
                 ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
-                serializeField(field, annotation, buffer);
+                serializeField(object, field, annotation, buffer);
             }
         }
         byte[] result = new byte[buffer.position()];
@@ -39,7 +36,10 @@ public class ObjectSerializer {
         return result;
     }
 
-    private void serializeField(Field field, ByteSerialize annotation, ByteBuffer buffer) throws IllegalAccessException {
+    private void serializeField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws IllegalAccessException {
+        if (field.get(object) == null) {
+            return;
+        }
         AnnotationDataClass annotationDataClass = getAnnotationDataClass(annotation);
         if (annotation.type() == ArrayList.class) {
             Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.innerType());
@@ -73,7 +73,7 @@ public class ObjectSerializer {
 
         while (buffer.hasRemaining()) {
             byte typeId = buffer.get();
-            ByteSerialize byteSerialize = getAnnotationFromIdentifier(typeId);
+            ByteSerialize byteSerialize = getAnnotationFromIdentifier(typeId, clazz);
             if (byteSerialize == null) {
                 throw new NullPointerException("No serializer found for typeId: " + typeId + " position " + buffer.position());
             }
@@ -121,8 +121,8 @@ public class ObjectSerializer {
         return bytes;
     }
 
-    private ByteSerialize getAnnotationFromIdentifier(byte type) {
-        for (Field field : this.object.getClass().getDeclaredFields()) {
+    private ByteSerialize getAnnotationFromIdentifier(byte type, Class<?> clazz) {
+        for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ByteSerialize.class)) {
                 field.setAccessible(true);
                 ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
