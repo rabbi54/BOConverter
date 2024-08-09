@@ -38,8 +38,8 @@ public class LocationDataSerializer implements Serializer<Double> {
             return null;
         }
         StringBuilder result = new StringBuilder();
-        for (byte b : data) {
-            result.append(String.format("%02X", b & 0xFF));
+        for (int i = 7; i >= 0; i--) {
+            result.append(String.format("%02X", data[i] & 0xFF));
         }
         long value = Long.parseLong(result.toString(), 16);
         double d = Double.longBitsToDouble(value);

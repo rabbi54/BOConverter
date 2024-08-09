@@ -21,6 +21,7 @@ public class FloatSerializer implements Serializer<Float> {
         bytes[1] = (byte) (second & 0xFF);
         bytes[2] = (byte) (third & 0xFF);
         bytes[3] = (byte) (fourth & 0xFF);
+
         return bytes;
     }
 
@@ -30,8 +31,8 @@ public class FloatSerializer implements Serializer<Float> {
             return null;
         }
         StringBuilder val = new StringBuilder();
-        for (byte b : data) {
-            val.append(String.format("%02X", b));
+        for (int i = Float.BYTES - 1; i >= 0; i--) {
+            val.append(String.format("%02X", data[i]));
         }
 
         long longVal = Long.parseLong(val.toString(), 16);

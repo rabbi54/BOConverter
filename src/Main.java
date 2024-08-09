@@ -12,7 +12,7 @@ public class Main {
         food.setFoodType(42);
         food.setFoodName("Alu vorta");
         food.setFoodUUID(new UUID(12, 12));
-        food.setFoodAmount(19.89123f);
+        food.setFoodAmount(19.89123d);
         ArrayList<Double> list = new ArrayList<>();
         list.add(1.1);
         list.add(2.2);
