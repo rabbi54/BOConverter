@@ -1,9 +1,9 @@
 package utils.serializers;
 
+import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 public class StringSerializer implements Serializer<String> {
 
@@ -25,7 +25,7 @@ public class StringSerializer implements Serializer<String> {
 
         if (dataClass.length == 0) {
             buffer = ByteBuffer.allocate(4 + value.length());
-            buffer.putInt(value.length());
+            IntegerSerializer.putInt(buffer, value.length());
         } else {
             buffer = ByteBuffer.allocate(value.length());
         }

@@ -1,9 +1,9 @@
-package utils.serializers;
+package utils.dataclass;
 
 public class AnnotationDataClass {
-    Class<?> type;
-    byte identifier;
-    int length;
+    public Class<?> type;
+    public byte identifier;
+    public int length;
 
     public AnnotationDataClass(Class<?> type, byte identifier, int length) {
         this.type = type;

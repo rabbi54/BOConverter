@@ -1,5 +1,6 @@
 package utils.serializers;
 
+import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 
 import java.nio.ByteBuffer;

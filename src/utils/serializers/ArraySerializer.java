@@ -1,5 +1,6 @@
 package utils.serializers;
 
+import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -48,9 +49,9 @@ public class ArraySerializer<T> implements Serializer<T> {
 
     private void updatePrefix(ByteBuffer buffer, AnnotationDataClass annotationDataClass, int arraySize, int totalLength) {
         if (annotationDataClass.length != 0) {
-            buffer.putInt(0, arraySize * annotationDataClass.length);
+            IntegerSerializer.putInt(buffer, arraySize * annotationDataClass.length, 0);
         } else {
-            buffer.putInt(0, totalLength);
+            IntegerSerializer.putInt(buffer, totalLength, 0);
         }
     }
 
@@ -85,7 +86,7 @@ public class ArraySerializer<T> implements Serializer<T> {
     private int getElementLength(AnnotationDataClass dataClass, AnnotationDataClass newDataClass, ByteBuffer buffer) {
         int elementLength = dataClass.length;
         if (elementLength == 0) {
-            elementLength = buffer.getInt();
+            elementLength = IntegerSerializer.getInt(buffer);
             newDataClass.setLength(elementLength);
         }
         return elementLength;
