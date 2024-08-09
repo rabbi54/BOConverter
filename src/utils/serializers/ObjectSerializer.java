@@ -1,6 +1,7 @@
 package utils.serializers;
 
 import org.jetbrains.annotations.NotNull;
+import utils.dataclass.AnnotationDataClass;
 import utils.exceptions.SerializerMismatchException;
 import utils.interfaces.ByteSerialize;
 import utils.interfaces.Serializer;
@@ -25,6 +26,7 @@ public class ObjectSerializer {
         serializers.put(UUIDSerializer.class, new UUIDSerializer());
         serializers.put(StringSerializer.class, new StringSerializer());
         serializers.put(DoubleSerializer.class, new DoubleSerializer());
+        serializers.put(BooleanSerializer.class, new BooleanSerializer());
     }
 
     // Static initializer block for serializer-field compatibility map
@@ -34,6 +36,7 @@ public class ObjectSerializer {
         serializerFieldCompatibilityMap.put(StringSerializer.class, String.class);
         serializerFieldCompatibilityMap.put(DoubleSerializer.class, Double.class);
         serializerFieldCompatibilityMap.put(ArraySerializer.class, ArrayList.class);
+        serializerFieldCompatibilityMap.put(BooleanSerializer.class, Boolean.class);
     }
 
     // Public methods
@@ -91,7 +94,7 @@ public class ObjectSerializer {
         }
 
         AnnotationDataClass annotationDataClass = getAnnotationDataClass(annotation);
-        checkSupportedSerializer(annotationDataClass.getType());
+        checkSupportedSerializer(annotationDataClass.type);
 
         if (annotation.type() == ArraySerializer.class) {
             serializeArrayField(object, field, annotation, buffer, annotationDataClass);
@@ -130,11 +133,11 @@ public class ObjectSerializer {
     private void addFieldValue(Class<?> clazz, ByteSerialize byteSerialize, ByteBuffer buffer, Object object, byte typeId) throws SerializerMismatchException, IllegalAccessException {
         int length = getLength(byteSerialize, buffer);
         AnnotationDataClass annotationDataClass = getAnnotationDataClass(byteSerialize);
-        checkSupportedSerializer(annotationDataClass.getType());
+        checkSupportedSerializer(annotationDataClass.type);
         Field field = findFieldByIdentifier(clazz, annotationDataClass.identifier);
         Object deserializedValue;
         if (field != null) {
-            checkSerializerFieldCompatibility(annotationDataClass.getType(), field.getType());
+            checkSerializerFieldCompatibility(annotationDataClass.type, field.getType());
             deserializedValue = getObject(byteSerialize, buffer, annotationDataClass, length);
             field.setAccessible(true);
             field.set(object, deserializedValue);
@@ -205,7 +208,7 @@ public class ObjectSerializer {
     private int getLength(ByteSerialize byteSerialize, ByteBuffer buffer) {
         int length = byteSerialize.length();
         if (length == 0 || byteSerialize.type() == ArraySerializer.class) { // contains variable length objects
-            length = buffer.getInt(); // for string reads size of the strings, for array reads total bytes in the array
+            length = IntegerSerializer.getInt(buffer); // for string reads size of the strings, for array reads total bytes in the array
         }
         return length;
     }
