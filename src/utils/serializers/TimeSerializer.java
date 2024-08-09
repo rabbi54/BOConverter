@@ -10,19 +10,7 @@ public class TimeSerializer implements Serializer<Long> {
     public byte[] serialize(Long value) {
         StringBuilder timeString = new StringBuilder("00000000");
         byte[] bytes = new byte[4];
-        if (value != 0) {
-            value = (value - 631152000000L);
-            if (value > 0) {
-                value /= 1000;
-                timeString = new StringBuilder(Long.toHexString(value));
-            }
-            if (timeString.length() < 8) {
-                for (int i = timeString.length(); i < 8; i++)
-                    timeString.append('0');
-            } else if (timeString.length() > 8) {
-                timeString = new StringBuilder("00000000");
-            }
-        }
+        timeString = getProcessedTimeString(value, timeString);
 
         byte[] bArray = hexStringToByteArray(timeString.toString());
         int x = 0;
@@ -31,6 +19,22 @@ public class TimeSerializer implements Serializer<Long> {
         }
 
         return bytes;
+    }
+
+    private StringBuilder getProcessedTimeString(Long value, StringBuilder timeString) {
+        if (value != 0) {
+            value = (value - 631152000000L);
+            if (value > 0) {
+                value /= 1000;
+                timeString = new StringBuilder(Long.toHexString(value));
+            }
+            if (timeString.length() < 8) {
+                timeString.append("0".repeat(Math.max(0, 8 - timeString.length())));
+            } else if (timeString.length() > 8) {
+                timeString = new StringBuilder("00000000");
+            }
+        }
+        return timeString;
     }
 
     private byte[] hexStringToByteArray(String s) {
