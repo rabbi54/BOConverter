@@ -1,10 +1,7 @@
 package models;
 
 import utils.interfaces.ByteSerialize;
-import utils.serializers.ArraySerializer;
-import utils.serializers.IntegerSerializer;
-import utils.serializers.StringSerializer;
-import utils.serializers.UUIDSerializer;
+import utils.serializers.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -19,6 +16,9 @@ public class ZoneType {
 
     @ByteSerialize(type= UUIDSerializer.class, identifier = 0x75, length = 16)
     UUID uuid;
+
+    @ByteSerialize(type = TimeSerializer.class, identifier = 0x13, length = 4)
+    Long length;
 
     @ByteSerialize(type = ArraySerializer.class, identifier = 0x12, length = 0, innerType = StringSerializer.class)
     ArrayList<String> zones;
@@ -53,5 +53,13 @@ public class ZoneType {
 
     public void setZones(ArrayList<String> zones) {
         this.zones = zones;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 }

@@ -27,6 +27,13 @@ public class ObjectSerializer {
         serializers.put(StringSerializer.class, new StringSerializer());
         serializers.put(DoubleSerializer.class, new DoubleSerializer());
         serializers.put(BooleanSerializer.class, new BooleanSerializer());
+        serializers.put(ByteIntSerializer.class, new ByteIntSerializer());
+        serializers.put(ShortSerializer.class, new ShortSerializer());
+        serializers.put(FloatSerializer.class, new FloatSerializer());
+        serializers.put(LongSerializer.class, new LongSerializer());
+        serializers.put(LongFrom4ByteSerializer.class, new LongFrom4ByteSerializer());
+        serializers.put(LocationDataSerializer.class, new LocationDataSerializer());
+        serializers.put(TimeSerializer.class, new TimeSerializer());
     }
 
     // Static initializer block for serializer-field compatibility map
@@ -37,6 +44,14 @@ public class ObjectSerializer {
         serializerFieldCompatibilityMap.put(DoubleSerializer.class, Double.class);
         serializerFieldCompatibilityMap.put(ArraySerializer.class, ArrayList.class);
         serializerFieldCompatibilityMap.put(BooleanSerializer.class, Boolean.class);
+        serializerFieldCompatibilityMap.put(ByteIntSerializer.class, Integer.class);
+        serializerFieldCompatibilityMap.put(ShortSerializer.class, Short.class);
+        serializerFieldCompatibilityMap.put(FloatSerializer.class, Float.class);
+        serializerFieldCompatibilityMap.put(LongSerializer.class, Long.class);
+        serializerFieldCompatibilityMap.put(LongFrom4ByteSerializer.class, Long.class);
+        serializerFieldCompatibilityMap.put(LocationDataSerializer.class, Double.class);
+        serializerFieldCompatibilityMap.put(TimeSerializer.class, Long.class);
+
     }
 
     // Public methods

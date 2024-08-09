@@ -4,6 +4,7 @@ import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class StringSerializer implements Serializer<String> {
 
@@ -20,29 +21,30 @@ public class StringSerializer implements Serializer<String> {
          * is specified in the annotation, the string length will not be prefixed.
          */
         ByteBuffer buffer;
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         if(dataClass == null)
             throw new NullPointerException("Annotation cannot be null");
 
         if (dataClass.length == 0) {
-            buffer = ByteBuffer.allocate(4 + value.length());
-            IntegerSerializer.putInt(buffer, value.length());
+            buffer = ByteBuffer.allocate(4 + bytes.length);
+            IntegerSerializer.putInt(buffer, bytes.length);
         } else {
-            buffer = ByteBuffer.allocate(value.length());
+            buffer = ByteBuffer.allocate(bytes.length);
         }
 
-        for(int i = 0; i < value.length(); i++) {
-            buffer.put((byte) value.charAt(i));
+        for (byte aByte : bytes) {
+            buffer.put(aByte);
         }
         return buffer.array();
     }
 
     @Override
     public String deserialize(byte[] data, AnnotationDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        int stringLen = dataClass.length;
-        byte[] stringBytes = new byte[stringLen];
-        buffer.get(stringBytes, 0, stringLen);
-        return new String(stringBytes);
+        if(data.length != dataClass.length) {
+            return null;
+        }
+
+        return new String(data, StandardCharsets.UTF_8);
     }
 
     @Override

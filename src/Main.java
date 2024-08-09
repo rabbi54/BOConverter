@@ -12,7 +12,7 @@ public class Main {
         food.setFoodType(42);
         food.setFoodName("Alu vorta");
         food.setFoodUUID(new UUID(12, 12));
-        food.setFoodAmount(19.89);
+        food.setFoodAmount(19.89123f);
         ArrayList<Double> list = new ArrayList<>();
         list.add(1.1);
         list.add(2.2);
@@ -36,6 +36,7 @@ public class Main {
         ZoneType zoneType = new ZoneType();
         zoneType.setMaxValue(20);
         zoneType.setMinValue(10);
+        zoneType.setLength(1723214160000L);
         zoneType.setUuid(new UUID(12631, 21782));
         ArrayList<String> zones = new ArrayList<>();
         zones.add("Max");
@@ -50,7 +51,7 @@ public class Main {
 
         ZoneType deserializedZone = (ZoneType) objectSerializer.deserialize(serializedZone, ZoneType.class);
         System.out.println("Deserialized Zone: " + deserializedZone.getMaxValue()
-                + " " + deserializedZone.getMinValue() + " " + deserializedZone.getUuid()
+                + " " + deserializedZone.getMinValue() + " " + deserializedZone.getUuid() + " " + deserializedZone.getLength()
         );
 
         for (int i = 0; i < deserializedZone.getZones().size(); i++) {
