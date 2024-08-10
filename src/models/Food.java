@@ -47,6 +47,14 @@ public class Food {
         this.arrayList = arrayList;
     }
 
+    public ZoneType getZoneType() {
+        return zoneType;
+    }
+
+    public void setZoneType(ZoneType zoneType) {
+        this.zoneType = zoneType;
+    }
+
     @ByteSerialize(type = StringSerializer.class, identifier = 0x10)
     String foodName;
 
@@ -61,4 +69,7 @@ public class Food {
 
     @ByteSerialize(type = ArraySerializer.class, identifier = 0x13, length = 8, innerType = DoubleSerializer.class)
     ArrayList<Double> arrayList;
+
+    @ByteSerialize(identifier = 0x14)
+    ZoneType zoneType;
 }

@@ -19,20 +19,6 @@ public class Main {
         list.add(3.3);
         food.setArrayList(list);
 
-        ObjectSerializer objectSerializer = new ObjectSerializer();
-        byte[] serializedFood = objectSerializer.serialize(food);
-        System.out.println("Serialized Food: " + java.util.Arrays.toString(serializedFood));
-
-        Food deserializedFood = (Food) objectSerializer.deserialize(serializedFood, Food.class);
-        System.out.println("Deserialized Food: " + deserializedFood.getFoodType()
-                    + " " + deserializedFood.getFoodName() + " " + deserializedFood.getFoodUUID()
-                    + " " + deserializedFood.getFoodAmount()
-        );
-
-        for (int i = 0; i < deserializedFood.getArrayList().size(); i++) {
-            System.out.println(deserializedFood.getArrayList().get(i));
-        }
-
         ZoneType zoneType = new ZoneType();
         zoneType.setMaxValue(20);
         zoneType.setMinValue(10);
@@ -44,12 +30,25 @@ public class Main {
         zones.add("Sem");
         zoneType.setZones(zones);
 
+        food.setZoneType(zoneType);
 
-        objectSerializer = new ObjectSerializer();
-        byte[] serializedZone = objectSerializer.serialize(zoneType);
-        System.out.println("Serialized Zone: " + java.util.Arrays.toString(serializedZone));
 
-        ZoneType deserializedZone = (ZoneType) objectSerializer.deserialize(serializedZone, ZoneType.class);
+        ObjectSerializer objectSerializer = new ObjectSerializer();
+        byte[] serializedFood = objectSerializer.serialize(food);
+        System.out.println("Serialized Food: " + java.util.Arrays.toString(serializedFood));
+
+        Food deserializedFood = (Food) objectSerializer.deserialize(serializedFood, Food.class);
+        System.out.println("Deserialized Food: " + deserializedFood.getFoodType()
+                + " " + deserializedFood.getFoodName() + " " + deserializedFood.getFoodUUID()
+                + " " + deserializedFood.getFoodAmount()
+        );
+
+        for (int i = 0; i < deserializedFood.getArrayList().size(); i++) {
+            System.out.println(deserializedFood.getArrayList().get(i));
+        }
+
+        ZoneType deserializedZone = deserializedFood.getZoneType();
+
         System.out.println("Deserialized Zone: " + deserializedZone.getMaxValue()
                 + " " + deserializedZone.getMinValue() + " " + deserializedZone.getUuid() + " " + deserializedZone.getLength()
         );
@@ -57,5 +56,6 @@ public class Main {
         for (int i = 0; i < deserializedZone.getZones().size(); i++) {
             System.out.println(deserializedZone.getZones().get(i));
         }
+
     }
 }
