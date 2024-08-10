@@ -2,11 +2,13 @@ package utils.serializers;
 
 import org.jetbrains.annotations.NotNull;
 import utils.dataclass.AnnotationDataClass;
+import utils.exceptions.SerializerCreationException;
 import utils.exceptions.SerializerMismatchException;
 import utils.interfaces.ByteSerialize;
 import utils.interfaces.Serializer;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -14,27 +16,10 @@ import java.util.*;
 
 public class ObjectSerializer {
 
-    private static final Map<Class<?>, Serializer<?>> serializers = new HashMap<>();
     private static final Map<Class<?>, Class<?>> serializerFieldCompatibilityMap = new HashMap<>();
 
     // Constructor
     public ObjectSerializer() {}
-
-    // Static initializer block for serializers
-    static {
-        serializers.put(IntegerSerializer.class, new IntegerSerializer());
-        serializers.put(UUIDSerializer.class, new UUIDSerializer());
-        serializers.put(StringSerializer.class, new StringSerializer());
-        serializers.put(DoubleSerializer.class, new DoubleSerializer());
-        serializers.put(BooleanSerializer.class, new BooleanSerializer());
-        serializers.put(ByteIntSerializer.class, new ByteIntSerializer());
-        serializers.put(ShortSerializer.class, new ShortSerializer());
-        serializers.put(FloatSerializer.class, new FloatSerializer());
-        serializers.put(LongSerializer.class, new LongSerializer());
-        serializers.put(LongFrom4ByteSerializer.class, new LongFrom4ByteSerializer());
-        serializers.put(LocationDataSerializer.class, new LocationDataSerializer());
-        serializers.put(TimeSerializer.class, new TimeSerializer());
-    }
 
     // Static initializer block for serializer-field compatibility map
     static {
@@ -87,19 +72,16 @@ public class ObjectSerializer {
     }
 
     // Private helper methods
-    private static <T> Serializer<T> getSerializer(Class<T> clazz) {
+    private static <T> Serializer<T> getSerializer(Class<T> clazz) throws SerializerCreationException {
         if (clazz == null) {
             throw new NullPointerException("Class cannot be null");
         }
-        if (!serializers.containsKey(clazz)) {
-            throw new IllegalArgumentException("No serializer registered for type identifier: " + clazz.getName());
-        }
-        Serializer<?> serializer = serializers.get(clazz);
-        if (serializer == null) {
-            throw new IllegalArgumentException("No serializer registered for type identifier: " + clazz.getName());
-        }
 
-        return (Serializer<T>) serializer;
+        try {
+            return (Serializer<T>) clazz.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new SerializerCreationException("Failed to create serializer for class: " + clazz.getName(), e);
+        }
     }
 
 
@@ -120,7 +102,7 @@ public class ObjectSerializer {
 
     private void serializeArrayField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer, AnnotationDataClass annotationDataClass) throws Exception {
         @SuppressWarnings("unchecked")
-        Serializer<Object> innerSerializer = (Serializer<Object>) serializers.get(annotation.innerType());
+        Serializer<Object> innerSerializer = (Serializer<Object>) getSerializer(annotation.innerType());
 
         Class<?> innerClass = getInnerClass(field);
         checkSerializerFieldCompatibility(innerSerializer.getClass(), innerClass);
@@ -134,18 +116,16 @@ public class ObjectSerializer {
 
     private void serializeSimpleField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer, AnnotationDataClass annotationDataClass) throws Exception {
         @SuppressWarnings("unchecked")
-        Serializer<Object> serializer = (Serializer<Object>) serializers.get(annotation.type());
+        Serializer<Object> serializer = (Serializer<Object>) getSerializer(annotation.type());
 
-        if (serializer != null) {
-            checkSerializerFieldCompatibility(serializer.getClass(), field.getType());
-            byte[] serializedData = serializer.serialize(field.get(object), annotationDataClass);
+        checkSerializerFieldCompatibility(serializer.getClass(), field.getType());
+        byte[] serializedData = serializer.serialize(field.get(object), annotationDataClass);
 
-            buffer.put(annotation.identifier());
-            buffer.put(serializedData);
-        }
+        buffer.put(annotation.identifier());
+        buffer.put(serializedData);
     }
 
-    private void addFieldValue(Class<?> clazz, ByteSerialize byteSerialize, ByteBuffer buffer, Object object, byte typeId) throws SerializerMismatchException, IllegalAccessException {
+    private void addFieldValue(Class<?> clazz, ByteSerialize byteSerialize, ByteBuffer buffer, Object object, byte typeId) throws SerializerMismatchException, IllegalAccessException, SerializerCreationException {
         int length = getLength(byteSerialize, buffer);
         AnnotationDataClass annotationDataClass = getAnnotationDataClass(byteSerialize);
         checkSupportedSerializer(annotationDataClass.type);
@@ -161,11 +141,11 @@ public class ObjectSerializer {
         }
     }
 
-    private Object getObject(ByteSerialize byteSerialize, ByteBuffer buffer, AnnotationDataClass annotationDataClass, int length) {
+    private Object getObject(ByteSerialize byteSerialize, ByteBuffer buffer, AnnotationDataClass annotationDataClass, int length) throws SerializerCreationException {
         Object deserializedValue;
         if (byteSerialize.type() == ArraySerializer.class) {
             @SuppressWarnings("unchecked")
-            Serializer<Object> serializer = (Serializer<Object>) serializers.get(byteSerialize.innerType());
+            Serializer<Object> serializer = (Serializer<Object>) getSerializer(byteSerialize.innerType());
             ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
             deserializedValue = arraySerializer.deserialize(getBytes(buffer, length), annotationDataClass);
         }
