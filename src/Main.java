@@ -11,7 +11,7 @@ public class Main {
         Food food = new Food();
         food.setFoodType(42);
         food.setFoodName("Alu vorta");
-        food.setFoodUUID(new UUID(12, 12));
+        food.setFoodUUID("0000018d-f7a9-9575-a405-eede1217e657");
         food.setFoodAmount(19.89123d);
         ArrayList<Double> list = new ArrayList<>();
         list.add(1.1);
@@ -23,7 +23,7 @@ public class Main {
         zoneType.setMaxValue(20);
         zoneType.setMinValue(10);
         zoneType.setLength(1723214160000L);
-        zoneType.setUuid(new UUID(12631, 21782));
+        zoneType.setUuid("0000018d-070e-5705-a405-eede1217e657");
         ArrayList<String> zones = new ArrayList<>();
         zones.add("Max");
         zones.add("Min");

@@ -6,63 +6,39 @@ import utils.interfaces.Serializer;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-public class UUIDSerializer implements Serializer<UUID> {
+public class UUIDSerializer implements Serializer<String> {
 
     @Override
-    public byte[] serialize(UUID uuid) {
-        // Convert UUID to a 16-byte array
-        ByteBuffer buffer = ByteBuffer.allocate(16); // 1 byte type + 16 bytes UUID
-        buffer.putLong(uuid.getMostSignificantBits());
-        buffer.putLong(uuid.getLeastSignificantBits());
-        return buffer.array();
-    }
-
-    @Override
-    public UUID deserialize(byte[] data, AnnotationDataClass dataClass) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        long mostSigBits = buffer.getLong();
-        long leastSigBits = buffer.getLong();
-        return new UUID(mostSigBits, leastSigBits);
-    }
-
-    @Override
-    public Class<UUID> getType() {
-        return UUID.class;
-    }
-
-    // Additional utility method to convert UUID to hex string
-    public static String uuidToHexString(UUID uuid) {
-        ByteBuffer buffer = ByteBuffer.allocate(16);
-        buffer.putLong(uuid.getMostSignificantBits());
-        buffer.putLong(uuid.getLeastSignificantBits());
-        byte[] bytes = buffer.array();
-        return bytesToHex(bytes);
-    }
-
-    // Additional utility method to convert hex string to UUID
-    public static UUID hexStringToUUID(String hexString) {
-        byte[] bytes = hexStringToBytes(hexString);
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        long mostSigBits = buffer.getLong();
-        long leastSigBits = buffer.getLong();
-        return new UUID(mostSigBits, leastSigBits);
-    }
-
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
+    public byte[] serialize(String uuid) {
+        byte[] bytes = new byte[16];
+        if (uuid == null || uuid.isEmpty()) {
+            return bytes;
         }
-        return sb.toString();
+        uuid = uuid.replaceAll("-", "");
+        if (uuid.length() == 32) {
+            for (int i = 0; i < 16; i++) {
+                bytes[15 - i] = (byte) (Integer.parseInt(uuid.substring(i*2, i*2+2), 16) & 0xFF);
+            }
+        }
+        return bytes;
     }
 
-    private static byte[] hexStringToBytes(String hexString) {
-        int len = hexString.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
-                    + Character.digit(hexString.charAt(i+1), 16));
+    @Override
+    public String deserialize(byte[] data, AnnotationDataClass dataClass) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 15; i >= 0; i--) {
+            builder.append(String.format("%02x", data[i] & 0xFF));
         }
-        return data;
+        builder.insert(8, "-");
+        builder.insert(13, "-");
+        builder.insert(18, "-");
+        builder.insert(23, "-");
+
+        return builder.toString();
+    }
+
+    @Override
+    public Class<String> getType() {
+        return String.class;
     }
 }

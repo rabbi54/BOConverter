@@ -15,7 +15,7 @@ public class ZoneType {
     Integer minValue;
 
     @ByteSerialize(type= UUIDSerializer.class, identifier = 0x75, length = 16)
-    UUID uuid;
+    String uuid;
 
     @ByteSerialize(type = TimeSerializer.class, identifier = 0x13, length = 4)
     Long length;
@@ -39,11 +39,11 @@ public class ZoneType {
         this.minValue = minValue;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

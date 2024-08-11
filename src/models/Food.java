@@ -15,11 +15,11 @@ public class Food {
         this.foodType = foodType;
     }
 
-    public UUID getFoodUUID() {
+    public String getFoodUUID() {
         return foodUUID;
     }
 
-    public void setFoodUUID(UUID foodUUID) {
+    public void setFoodUUID(String foodUUID) {
         this.foodUUID = foodUUID;
     }
 
@@ -59,7 +59,7 @@ public class Food {
     String foodName;
 
     @ByteSerialize(type = UUIDSerializer.class, identifier = 0x75, length = 16)
-    UUID foodUUID;
+    String foodUUID;
 
     @ByteSerialize(type = IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer foodType;

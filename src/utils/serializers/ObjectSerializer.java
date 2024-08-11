@@ -24,7 +24,7 @@ public class ObjectSerializer {
     // Static initializer block for serializer-field compatibility map
     static {
         serializerFieldCompatibilityMap.put(IntegerSerializer.class, Integer.class);
-        serializerFieldCompatibilityMap.put(UUIDSerializer.class, UUID.class);
+        serializerFieldCompatibilityMap.put(UUIDSerializer.class, String.class);
         serializerFieldCompatibilityMap.put(StringSerializer.class, String.class);
         serializerFieldCompatibilityMap.put(DoubleSerializer.class, Double.class);
         serializerFieldCompatibilityMap.put(ArraySerializer.class, ArrayList.class);
