@@ -86,7 +86,7 @@ public class ObjectSerializer {
 
 
     private void serializeField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws Exception {
-        if (field.get(object) == null) {
+        if (field.get(object) == null) { // TODO: Required field must be serialized
             return;
         }
 
@@ -94,16 +94,23 @@ public class ObjectSerializer {
         checkSupportedSerializer(annotationDataClass.type);
 
         if (annotationDataClass.type == Object.class) {
-            byte[] nestedSerializedData = serialize(field.get(object));
-            buffer.put(annotation.identifier());
-            IntegerSerializer.putInt(buffer, nestedSerializedData.length);
-            buffer.put(nestedSerializedData);
+            serializeNestedField(object, field, annotation, buffer);
         }
         else if (annotation.type() == ArraySerializer.class) {
             serializeArrayField(object, field, annotation, buffer, annotationDataClass);
         } else {
             serializeSimpleField(object, field, annotation, buffer, annotationDataClass);
         }
+    }
+
+    private void serializeNestedField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws Exception {
+        byte[] nestedSerializedData = serialize(field.get(object));
+        if (nestedSerializedData == null) {
+            return;
+        }
+        buffer.put(annotation.identifier());
+        IntegerSerializer.putInt(buffer, nestedSerializedData.length);
+        buffer.put(nestedSerializedData);
     }
 
     private void serializeArrayField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer, AnnotationDataClass annotationDataClass) throws Exception {
@@ -116,6 +123,9 @@ public class ObjectSerializer {
         ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
         byte[] serializedData = arraySerializer.serialize(field.get(object), annotationDataClass);
 
+        if (serializedData == null) {
+            return;
+        }
         buffer.put(annotation.identifier());
         buffer.put(serializedData);
     }
@@ -126,7 +136,9 @@ public class ObjectSerializer {
 
         checkSerializerFieldCompatibility(serializer.getClass(), field.getType());
         byte[] serializedData = serializer.serialize(field.get(object), annotationDataClass);
-
+        if (serializedData == null) {
+            return;
+        }
         buffer.put(annotation.identifier());
         buffer.put(serializedData);
     }
