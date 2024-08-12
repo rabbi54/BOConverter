@@ -12,7 +12,6 @@ public class Main {
         food.setFoodType(42);
         food.setFoodName("Alu vorta");
         food.setFoodUUID("0000018d-f7a9-9575-a405-eede1217e657");
-        food.setFoodAmount(19.89123d);
         ArrayList<Double> list = new ArrayList<>();
         list.add(1.1);
         list.add(2.2);

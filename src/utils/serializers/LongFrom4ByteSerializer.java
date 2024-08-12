@@ -10,6 +10,9 @@ public class LongFrom4ByteSerializer implements Serializer<Long> {
 
     @Override
     public byte[] serialize(Long value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(4);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putInt(value.intValue());
@@ -29,5 +32,10 @@ public class LongFrom4ByteSerializer implements Serializer<Long> {
     @Override
     public Class<Long> getType() {
         return Long.class;
+    }
+
+    @Override
+    public Long getDefaultValue() {
+        return 0L;
     }
 }

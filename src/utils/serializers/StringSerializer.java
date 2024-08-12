@@ -20,6 +20,9 @@ public class StringSerializer implements Serializer<String> {
          * will prefix the serialized string with its length. Otherwise, if the length
          * is specified in the annotation, the string length will not be prefixed.
          */
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer;
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         if(dataClass == null)
@@ -50,6 +53,11 @@ public class StringSerializer implements Serializer<String> {
     @Override
     public Class<String> getType() {
         return String.class;
+    }
+
+    @Override
+    public String getDefaultValue() {
+        return "";
     }
 
 }

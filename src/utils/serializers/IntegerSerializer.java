@@ -10,6 +10,9 @@ public class IntegerSerializer implements Serializer<Integer> {
 
     @Override
     public byte[] serialize(Integer value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(4);
         putInt(buffer, value);
         return buffer.array();
@@ -24,6 +27,11 @@ public class IntegerSerializer implements Serializer<Integer> {
     @Override
     public Class<Integer> getType() {
         return Integer.class;
+    }
+
+    @Override
+    public Integer getDefaultValue() {
+        return 0;
     }
 
     public static void putInt(ByteBuffer buffer, Integer value) {

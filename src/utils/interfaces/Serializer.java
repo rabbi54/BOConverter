@@ -9,5 +9,6 @@ public interface Serializer<T> {
     }
     T deserialize(byte[] data, AnnotationDataClass dataClass);
     Class<T> getType();
+    T getDefaultValue();
 }
 

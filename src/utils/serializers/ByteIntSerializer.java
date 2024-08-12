@@ -8,6 +8,9 @@ import java.nio.ByteBuffer;
 public class ByteIntSerializer implements Serializer<Integer> {
     @Override
     public byte[] serialize(Integer value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(1);
         int firstByte = value & 0xFF;
         buffer.put((byte) firstByte);
@@ -22,5 +25,10 @@ public class ByteIntSerializer implements Serializer<Integer> {
     @Override
     public Class<Integer> getType() {
         return Integer.class;
+    }
+
+    @Override
+    public Integer getDefaultValue() {
+        return 0;
     }
 }

@@ -8,6 +8,9 @@ public class FloatSerializer implements Serializer<Float> {
     @Override
     public byte[] serialize(Float value) {
         byte[] bytes = new byte[4];
+        if (value == null) {
+            value = getDefaultValue();
+        }
         if (value == 0d) {
             return bytes;
         }
@@ -46,5 +49,10 @@ public class FloatSerializer implements Serializer<Float> {
     @Override
     public Class<Float> getType() {
         return Float.class;
+    }
+
+    @Override
+    public Float getDefaultValue() {
+        return 0f;
     }
 }

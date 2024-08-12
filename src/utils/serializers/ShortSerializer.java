@@ -10,6 +10,9 @@ public class ShortSerializer implements Serializer<Short> {
 
     @Override
     public byte[] serialize(Short value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort(value);
@@ -29,5 +32,10 @@ public class ShortSerializer implements Serializer<Short> {
     @Override
     public Class<Short> getType() {
         return Short.class;
+    }
+
+    @Override
+    public Short getDefaultValue() {
+        return 0;
     }
 }

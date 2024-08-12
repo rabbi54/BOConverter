@@ -8,6 +8,9 @@ public class TimeSerializer implements Serializer<Long> {
 
     @Override
     public byte[] serialize(Long value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         StringBuilder timeString = new StringBuilder("00000000");
         byte[] bytes = new byte[4];
         timeString = getProcessedTimeString(value, timeString);
@@ -66,5 +69,10 @@ public class TimeSerializer implements Serializer<Long> {
     @Override
     public Class<Long> getType() {
         return Long.class;
+    }
+
+    @Override
+    public Long getDefaultValue() {
+        return 0L;
     }
 }

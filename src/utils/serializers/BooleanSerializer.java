@@ -9,6 +9,9 @@ public class BooleanSerializer implements Serializer<Boolean> {
 
     @Override
     public byte[] serialize(Boolean value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(1);
         buffer.put((byte) (value ? 1 : 0));
         return buffer.array();
@@ -24,5 +27,10 @@ public class BooleanSerializer implements Serializer<Boolean> {
     @Override
     public Class<Boolean> getType() {
         return Boolean.class;
+    }
+
+    @Override
+    public Boolean getDefaultValue() {
+        return false;
     }
 }

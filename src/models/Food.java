@@ -64,7 +64,7 @@ public class Food {
     @ByteSerialize(type = IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer foodType;
 
-    @ByteSerialize(type = LocationDataSerializer.class, identifier = 0x12, length = 8)
+    @ByteSerialize(type = DoubleSerializer.class, identifier = 0x12, length = 8)
     Double foodAmount;
 
     @ByteSerialize(type = ArraySerializer.class, identifier = 0x13, length = 8, innerType = DoubleSerializer.class)

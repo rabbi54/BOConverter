@@ -7,6 +7,9 @@ public class LocationDataSerializer implements Serializer<Double> {
     @Override
     public byte[] serialize(Double value) {
         byte[] bytes = new byte[8];
+        if (value == null) {
+            value = getDefaultValue();
+        }
         if (value == 0d) {
             return bytes;
         }
@@ -52,5 +55,10 @@ public class LocationDataSerializer implements Serializer<Double> {
     @Override
     public Class<Double> getType() {
         return Double.class;
+    }
+
+    @Override
+    public Double getDefaultValue() {
+        return 0.0;
     }
 }

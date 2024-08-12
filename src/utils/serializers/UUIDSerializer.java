@@ -10,6 +10,9 @@ public class UUIDSerializer implements Serializer<String> {
 
     @Override
     public byte[] serialize(String uuid) {
+        if (uuid == null) {
+            uuid = getDefaultValue();
+        }
         byte[] bytes = new byte[16];
         if (uuid == null || uuid.isEmpty()) {
             return bytes;
@@ -40,5 +43,10 @@ public class UUIDSerializer implements Serializer<String> {
     @Override
     public Class<String> getType() {
         return String.class;
+    }
+
+    @Override
+    public String getDefaultValue() {
+        return "00000000-0000-0000-0000-000000000000";
     }
 }

@@ -9,6 +9,9 @@ import java.nio.ByteOrder;
 public class LongSerializer implements Serializer<Long> {
     @Override
     public byte[] serialize(Long value) {
+        if (value == null) {
+            value = getDefaultValue();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putLong(value);
@@ -25,5 +28,10 @@ public class LongSerializer implements Serializer<Long> {
     @Override
     public Class<Long> getType() {
         return Long.class;
+    }
+
+    @Override
+    public Long getDefaultValue() {
+        return 0L;
     }
 }

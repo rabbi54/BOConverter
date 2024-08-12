@@ -21,6 +21,9 @@ public class ArraySerializer<T> implements Serializer<T> {
 
     @Override
     public byte[] serialize(T array, AnnotationDataClass annotationDataClass) {
+        if (array == null) {
+            array = getDefaultValue();
+        }
         if (!(array instanceof ArrayList)) {
             throw new IllegalArgumentException("Expected an ArrayList");
         }
@@ -96,6 +99,11 @@ public class ArraySerializer<T> implements Serializer<T> {
     @Override
     public Class<T> getType() {
         return elementSerializer.getType();
+    }
+
+    @Override
+    public T getDefaultValue() {
+        return (T) new ArrayList<T>();
     }
 
 }
