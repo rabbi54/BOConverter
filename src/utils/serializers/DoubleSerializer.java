@@ -4,6 +4,7 @@ import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class DoubleSerializer implements Serializer<Double> {
     @Override
@@ -11,7 +12,8 @@ public class DoubleSerializer implements Serializer<Double> {
         if (value == null) {
             value = getDefaultValue();
         }
-        ByteBuffer buffer = ByteBuffer.allocate(8);
+        ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putDouble(value);
         return buffer.array();
     }
@@ -19,6 +21,7 @@ public class DoubleSerializer implements Serializer<Double> {
     @Override
     public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
         return buffer.getDouble();
     }
 
