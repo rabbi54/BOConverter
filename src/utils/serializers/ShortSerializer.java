@@ -21,7 +21,7 @@ public class ShortSerializer implements Serializer<Short> {
 
     @Override
     public Short deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if (data.length != Short.BYTES) {
+        if (data == null || data.length != Short.BYTES) {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(data);

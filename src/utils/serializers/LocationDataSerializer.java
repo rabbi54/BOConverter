@@ -19,7 +19,7 @@ public class LocationDataSerializer implements Serializer<Double> {
 
     @Override
     public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if (data.length != 8) {
+        if (data == null || data.length != 8) {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(data);

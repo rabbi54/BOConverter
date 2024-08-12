@@ -55,6 +55,9 @@ public class TimeSerializer implements Serializer<Long> {
 
     @Override
     public Long deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length < 4) {
+            return null;
+        }
         StringBuilder timeString = new StringBuilder();
         for (int i = 3; i >= 0; i--) {
             timeString.append(String.format("%02X", data[i]));

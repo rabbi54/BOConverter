@@ -19,6 +19,9 @@ public class BooleanSerializer implements Serializer<Boolean> {
 
     @Override
     public Boolean deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null) {
+            return null;
+        }
         ByteBuffer buffer = ByteBuffer.wrap(data);
         byte value = buffer.get();
         return (value == 1);

@@ -43,7 +43,7 @@ public class StringSerializer implements Serializer<String> {
 
     @Override
     public String deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if(data.length != dataClass.length) {
+        if(data == null || data.length != dataClass.length) {
             return null;
         }
 

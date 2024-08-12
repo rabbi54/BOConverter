@@ -20,6 +20,9 @@ public class DoubleSerializer implements Serializer<Double> {
 
     @Override
     public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length != Double.BYTES) {
+            return null;
+        }
         ByteBuffer buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         return buffer.getDouble();

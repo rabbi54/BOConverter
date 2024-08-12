@@ -21,7 +21,7 @@ public class LongFrom4ByteSerializer implements Serializer<Long> {
 
     @Override
     public Long deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if (data.length != 4) {
+        if (data == null || data.length != 4) {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(data);

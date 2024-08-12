@@ -20,6 +20,9 @@ public class LongSerializer implements Serializer<Long> {
 
     @Override
     public Long deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length != 8) {
+            return null;
+        }
         ByteBuffer buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         return buffer.getLong();

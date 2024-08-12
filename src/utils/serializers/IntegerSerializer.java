@@ -20,6 +20,9 @@ public class IntegerSerializer implements Serializer<Integer> {
 
     @Override
     public Integer deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length != Integer.BYTES) {
+            return null;
+        }
         ByteBuffer buffer = ByteBuffer.wrap(data);
         return getInt(buffer);
     }

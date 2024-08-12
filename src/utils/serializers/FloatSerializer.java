@@ -21,7 +21,7 @@ public class FloatSerializer implements Serializer<Float> {
 
     @Override
     public Float deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if (data.length != Float.BYTES) {
+        if (data == null || data.length != Float.BYTES) {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(data);

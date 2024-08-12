@@ -28,6 +28,9 @@ public class UUIDSerializer implements Serializer<String> {
 
     @Override
     public String deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length < 15) {
+            return null;
+        }
         StringBuilder builder = new StringBuilder();
         for (int i = 15; i >= 0; i--) {
             builder.append(String.format("%02x", data[i] & 0xFF));

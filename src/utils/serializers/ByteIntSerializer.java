@@ -19,6 +19,9 @@ public class ByteIntSerializer implements Serializer<Integer> {
 
     @Override
     public Integer deserialize(byte[] data, AnnotationDataClass dataClass) {
+        if (data == null || data.length != 1) {
+            return null;
+        }
         return data[0] & 0xFF;
     }
 
