@@ -11,6 +11,7 @@ public @interface ByteSerialize {
     Class<?> type() default Object.class;
     byte identifier();
     int length() default 0;
+    boolean required() default true;
     Class<?> innerType() default Object.class;
 }
 

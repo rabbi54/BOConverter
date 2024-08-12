@@ -70,7 +70,8 @@ public class ArraySerializer<T> implements Serializer<T> {
         AnnotationDataClass newDataClass = new AnnotationDataClass(
                 dataClass.getType(),
                 dataClass.getIdentifier(),
-                dataClass.getLength()
+                dataClass.getLength(),
+                dataClass.getIsRequired()
         );
         while (buffer.hasRemaining()) {
             int elementLength = getElementLength(dataClass, newDataClass, buffer);

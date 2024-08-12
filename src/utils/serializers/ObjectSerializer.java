@@ -86,7 +86,7 @@ public class ObjectSerializer {
 
 
     private void serializeField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws Exception {
-        if (field.get(object) == null) { // TODO: Required field must be serialized
+        if (field.get(object) == null && !annotation.required()) {
             return;
         }
 
@@ -220,7 +220,8 @@ public class ObjectSerializer {
         return new AnnotationDataClass(
                 annotation.type(),
                 annotation.identifier(),
-                annotation.length()
+                annotation.length(),
+                annotation.required()
         );
     }
 

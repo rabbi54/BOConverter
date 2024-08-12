@@ -1,14 +1,16 @@
 package utils.dataclass;
 
 public class AnnotationDataClass {
+    private boolean isRequired;
     public Class<?> type;
     public byte identifier;
     public int length;
 
-    public AnnotationDataClass(Class<?> type, byte identifier, int length) {
+    public AnnotationDataClass(Class<?> type, byte identifier, int length, boolean isRequired) {
         this.type = type;
         this.identifier = identifier;
         this.length = length;
+        this.isRequired = isRequired;
     }
 
     public Class<?> getType() {
@@ -33,5 +35,13 @@ public class AnnotationDataClass {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public boolean getIsRequired() {
+        return isRequired;
+    }
+
+    public void setRequired(boolean required) {
+        this.isRequired = required;
     }
 }
