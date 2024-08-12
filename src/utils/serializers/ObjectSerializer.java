@@ -121,7 +121,8 @@ public class ObjectSerializer {
         checkSerializerFieldCompatibility(innerSerializer.getClass(), innerClass);
 
         ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
-        byte[] serializedData = arraySerializer.serialize(field.get(object), annotationDataClass);
+        @SuppressWarnings("unchecked")
+        byte[] serializedData = arraySerializer.serialize((ArrayList<Object>) field.get(object), annotationDataClass);
 
         if (serializedData == null) {
             return;

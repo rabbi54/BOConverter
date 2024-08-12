@@ -6,7 +6,7 @@ import utils.interfaces.Serializer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class ArraySerializer<T> implements Serializer<T> {
+public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     private final Serializer<T> elementSerializer;
 
     public ArraySerializer(Serializer<T> elementSerializer) {
@@ -15,19 +15,16 @@ public class ArraySerializer<T> implements Serializer<T> {
 
 
     @Override
-    public byte[] serialize(T value) {
+    public byte[] serialize(ArrayList<T> array) {
         return null;
     }
 
     @Override
-    public byte[] serialize(T array, AnnotationDataClass annotationDataClass) {
+    public byte[] serialize(ArrayList<T> array, AnnotationDataClass annotationDataClass) {
         if (array == null) {
             array = getDefaultValue();
         }
-        if (!(array instanceof ArrayList)) {
-            throw new IllegalArgumentException("Expected an ArrayList");
-        }
-        ArrayList<T> arrayList = (ArrayList<T>) array;
+        ArrayList<T> arrayList = array;
         ByteBuffer buffer = initializeBuffer();
         serializeArrayElements(arrayList, annotationDataClass, buffer);
 
@@ -67,7 +64,7 @@ public class ArraySerializer<T> implements Serializer<T> {
 
 
     @Override
-    public T deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public ArrayList<T> deserialize(byte[] data, AnnotationDataClass dataClass) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         ArrayList<T> arrayList = new ArrayList<>();
         AnnotationDataClass newDataClass = new AnnotationDataClass(
@@ -84,7 +81,7 @@ public class ArraySerializer<T> implements Serializer<T> {
             arrayList.add(element);
         }
 
-        return (T) arrayList;
+        return arrayList;
     }
 
     private int getElementLength(AnnotationDataClass dataClass, AnnotationDataClass newDataClass, ByteBuffer buffer) {
@@ -96,14 +93,15 @@ public class ArraySerializer<T> implements Serializer<T> {
         return elementLength;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Class<T> getType() {
-        return elementSerializer.getType();
+    public Class<ArrayList<T>> getType() {
+        return (Class<ArrayList<T>>) elementSerializer.getType();
     }
 
     @Override
-    public T getDefaultValue() {
-        return (T) new ArrayList<T>();
+    public ArrayList<T> getDefaultValue() {
+        return new ArrayList<>();
     }
 
 }
