@@ -37,7 +37,7 @@ BOConverter is a powerful and easy-to-use Java utility designed for converting o
 To use the converter, annotate your object properties with the `@ByteSerialize` annotation:
 
 ```java
-@ByteSerialize(type = YourSerializerClass.class, identifier = someByte, length = someLength, innerType = InnerClassSerializer.class)
+@ByteSerialize(type = YourSerializerClass.class, identifier = someByte, length = someLength, required = true/false, innerType = InnerClassSerializer.class)
 private YourType yourField;
 ```
 
@@ -46,9 +46,10 @@ private YourType yourField;
 - **`type`**: Specifies the serializer class to be used for this field.
 - **`identifier`**: A unique byte value that identifies this field during serialization/deserialization.
 - **`length`**: The length of the serialized data. If not provided, the converter will automatically add the length of the byte representation as a prefix.
+- **`required`**: Specifies whether serialization is mandatory, even if the value is null. If set to true and the value is null, it will be replaced by a default value during serialization.
 - **`innerType`**: Specifies the type of the elements when the `type` is `ArraySerializer.class`. Only needed for arrays.
 
-**Note**: If you don't provide the `type`, the field will be treated as a nested object. The `innerType` is only required for arrays.
+**Note**: If you don't provide the `type`, the field will be treated as a nested object. The `innerType` is only required for arrays. If you don't provide the `length` it means the field is variable length. By default `required` is set to true.
 
 
 Here’s a more generic example for the serialization and deserialization sections:
