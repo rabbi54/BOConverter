@@ -1,11 +1,10 @@
+import models.Area;
 import models.Food;
 import models.ZoneType;
 import org.jetbrains.annotations.NotNull;
 import utils.serializers.ObjectSerializer;
 
 import java.util.ArrayList;
-import java.util.UUID;
-
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -42,6 +41,11 @@ public class Main {
             System.out.println(deserializedZone.getZones().get(i));
         }
 
+
+        for (int i = 0; i < deserializedZone.getAreas().size(); i++) {
+            System.out.println(deserializedZone.getAreas().get(i).getAreaName() + " " + deserializedZone.getAreas().get(i).getArea());
+        }
+
     }
 
     private static @NotNull Food getFood() {
@@ -72,7 +76,17 @@ public class Main {
         zoneType.setAltitude(15L);       // Altitude in meters (example: 15 meters above sea level)
         zoneType.setBearing((short) 120);       // Bearing in degrees (example: 120.5 degrees)
 
+        ArrayList<Area> areas = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            Area area = new Area();
+            area.setAreaName("Area" + i);
+            area.setArea((double) i);
+            areas.add(area);
+        }
+        zoneType.setAreas(areas);
+
         food.setZoneType(zoneType);
+
         return food;
     }
 }

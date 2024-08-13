@@ -41,6 +41,17 @@ public class ZoneType {
     @ByteSerialize(type = LongSerializer.class, identifier = 0x19, length = 8)
     Long altitude;
 
+    @ByteSerialize(type=ArraySerializer.class, identifier = 0x1A)
+    ArrayList<Area>areas;
+
+    public ArrayList<Area> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(ArrayList<Area> areas) {
+        this.areas = areas;
+    }
+
     public Boolean getSafe() {
         return isSafe;
     }

@@ -42,8 +42,25 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
 
     private void serializeArrayElements(ArrayList<T> arrayList, AnnotationDataClass annotationDataClass, ByteBuffer buffer) {
         for (T element : arrayList) {
-            byte[] serializedElement = elementSerializer.serialize(element, annotationDataClass);
+            byte[] serializedElement = serializeElement(element, annotationDataClass);
             buffer.put(serializedElement);
+        }
+    }
+
+    private byte[] serializeElement(T element, AnnotationDataClass annotationDataClass) {
+        try {
+            byte[] serializedData = elementSerializer.serialize(element, annotationDataClass);
+
+            if (annotationDataClass.type == Object.class) {
+                ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES + serializedData.length);
+                IntegerSerializer.putInt(buffer, serializedData.length);
+                buffer.put(serializedData);
+                return buffer.array();
+            }
+            return serializedData;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Serialization failed", e);
         }
     }
 
