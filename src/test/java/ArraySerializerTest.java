@@ -1,16 +1,19 @@
 package test.java;
 
+import models.SleepBinning;
 import org.junit.jupiter.api.Test;
 import utils.dataclass.AnnotationDataClass;
 import utils.interfaces.Serializer;
 import utils.serializers.ArraySerializer;
 import utils.serializers.DoubleSerializer;
+import utils.serializers.SleepBinningSerializer;
 import utils.serializers.TimeSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class ArraySerializerTest {
 
@@ -110,6 +113,31 @@ public class ArraySerializerTest {
         ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, annotationDataClass);
 
         assertEquals(timeArray, deserialized);
+    }
+
+    @Test
+    public void testObjectArraySerializationNoObjectLengthPrefix() {
+        SleepBinningSerializer sleepBinningSerializer = new SleepBinningSerializer();
+        ArraySerializer<SleepBinning> sleepBinningArraySerializer = new ArraySerializer<>(sleepBinningSerializer);
+        AnnotationDataClass annotationDataClass = new AnnotationDataClass(SleepBinningSerializer.class, (byte)1, 8, false);
+
+        ArrayList<SleepBinning> binnings = new ArrayList<>();
+        binnings.add(new SleepBinning(1, 2));
+        binnings.add(new SleepBinning(3, 4));
+        binnings.add(new SleepBinning(5, 6));
+
+        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, annotationDataClass);
+        byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
+        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+
+        assertEquals(binnings.size(), deserialized.size());
+        for (int i = 0; i < binnings.size(); i++) {
+            SleepBinning original = binnings.get(i);
+            SleepBinning result = deserialized.get(i);
+
+            assertEquals(original.getHrri(), result.getHrri());
+            assertEquals(original.getHrss(), result.getHrss());
+        }
     }
 }
 
