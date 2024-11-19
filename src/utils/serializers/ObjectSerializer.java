@@ -1,5 +1,6 @@
 package utils.serializers;
 
+import models.SleepBinning;
 import org.jetbrains.annotations.NotNull;
 import utils.dataclass.AnnotationDataClass;
 import utils.exceptions.SerializerCreationException;
@@ -18,10 +19,8 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private static final Map<Class<?>, Class<?>> serializerFieldCompatibilityMap = new HashMap<>();
 
-    // Constructor
     public ObjectSerializer() {}
 
-    // Static initializer block for serializer-field compatibility map
     static {
         serializerFieldCompatibilityMap.put(IntegerSerializer.class, Integer.class);
         serializerFieldCompatibilityMap.put(UUIDSerializer.class, String.class);
@@ -36,10 +35,10 @@ public class ObjectSerializer implements Serializer<Object> {
         serializerFieldCompatibilityMap.put(LongFrom4ByteSerializer.class, Long.class);
         serializerFieldCompatibilityMap.put(LocationDataSerializer.class, Double.class);
         serializerFieldCompatibilityMap.put(TimeSerializer.class, Long.class);
+        serializerFieldCompatibilityMap.put(SleepBinningSerializer.class, SleepBinning.class);
 
     }
 
-    // Public methods
     public byte[] serialize(Object object) {
         ByteBuffer buffer = ByteBuffer.allocate(1024); // Assume 1024 bytes is enough for serialization
 
@@ -93,7 +92,6 @@ public class ObjectSerializer implements Serializer<Object> {
         return object;
     }
 
-    // Private helper methods
     private static <T> Serializer<T> getSerializer(Class<T> clazz) throws SerializerCreationException {
         if (clazz == null) {
             throw new NullPointerException("Class cannot be null");

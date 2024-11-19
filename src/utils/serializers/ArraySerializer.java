@@ -91,7 +91,7 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
                 dataClass.getIsRequired()
         );
         while (buffer.hasRemaining()) {
-            int elementLength = getElementLength(dataClass, newDataClass, buffer);
+            int elementLength = newDataClass.length > 0 ? newDataClass.length : getElementLength(dataClass, buffer);
             byte[] bytes = new byte[elementLength];
             buffer.get(bytes);
             T element = elementSerializer.deserialize(bytes, newDataClass);
@@ -101,11 +101,10 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
         return arrayList;
     }
 
-    private int getElementLength(AnnotationDataClass dataClass, AnnotationDataClass newDataClass, ByteBuffer buffer) {
+    private int getElementLength(AnnotationDataClass dataClass, ByteBuffer buffer) {
         int elementLength = dataClass.length;
         if (elementLength == 0) {
             elementLength = IntegerSerializer.getInt(buffer);
-            newDataClass.setLength(elementLength);
         }
         return elementLength;
     }

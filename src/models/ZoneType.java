@@ -44,6 +44,17 @@ public class ZoneType {
     @ByteSerialize(type=ArraySerializer.class, identifier = 0x1A)
     ArrayList<Area>areas;
 
+    @ByteSerialize(type=ArraySerializer.class, identifier = 0x1B, length = 8, innerType = SleepBinningSerializer.class)
+    ArrayList<SleepBinning>sleepBinnings;
+
+    public ArrayList<SleepBinning> getSleepBinnings() {
+        return sleepBinnings;
+    }
+
+    public void setSleepBinnings(ArrayList<SleepBinning> sleepBinnings) {
+        this.sleepBinnings = sleepBinnings;
+    }
+
     public ArrayList<Area> getAreas() {
         return areas;
     }

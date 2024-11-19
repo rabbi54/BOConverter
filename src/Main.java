@@ -1,5 +1,6 @@
 import models.Area;
 import models.Food;
+import models.SleepBinning;
 import models.ZoneType;
 import org.jetbrains.annotations.NotNull;
 import utils.serializers.ObjectSerializer;
@@ -46,6 +47,10 @@ public class Main {
             System.out.println(deserializedZone.getAreas().get(i).getAreaName() + " " + deserializedZone.getAreas().get(i).getArea());
         }
 
+        for (int i = 0; i < deserializedZone.getSleepBinnings().size(); i++) {
+            System.out.println(deserializedZone.getSleepBinnings().get(i).getHrri() + " " + deserializedZone.getSleepBinnings().get(i).getHrss());
+        }
+
     }
 
     private static @NotNull Food getFood() {
@@ -84,6 +89,16 @@ public class Main {
             areas.add(area);
         }
         zoneType.setAreas(areas);
+
+        ArrayList<SleepBinning> sleepBinnings = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            SleepBinning sleepBinning = new SleepBinning();
+            sleepBinning.setHrri(i);
+            sleepBinning.setHrss(i);
+            sleepBinnings.add(sleepBinning);
+        }
+
+        zoneType.setSleepBinnings(sleepBinnings);
 
         food.setZoneType(zoneType);
 
