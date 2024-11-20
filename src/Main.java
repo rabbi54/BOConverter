@@ -35,7 +35,7 @@ public class Main {
                 + " " + deserializedZone.getAltitude()
                 + " " + deserializedZone.getBearing()
                 + " " + deserializedZone.getAccuracy()
-                + " " + deserializedZone.getSafe()
+                + " " + deserializedZone.getIsSafe()
         );
 
         for (int i = 0; i < deserializedZone.getZones().size(); i++) {
@@ -75,7 +75,7 @@ public class Main {
         zones.add("Sem");
         zoneType.setZones(zones);
         zoneType.setAccuracy(16.219F);
-        zoneType.setSafe(Boolean.TRUE);
+        zoneType.setIsSafe(Boolean.TRUE);
         zoneType.setLatitude(37.7749);   // Latitude for San Francisco, CA
         zoneType.setLongitude(-122.4194); // Longitude for San Francisco, CA
         zoneType.setAltitude(15L);       // Altitude in meters (example: 15 meters above sea level)

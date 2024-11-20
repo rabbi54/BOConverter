@@ -4,7 +4,6 @@ import utils.interfaces.ByteSerialize;
 import utils.serializers.*;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class ZoneType {
 
@@ -63,11 +62,11 @@ public class ZoneType {
         this.areas = areas;
     }
 
-    public Boolean getSafe() {
+    public Boolean getIsSafe() {
         return isSafe;
     }
 
-    public void setSafe(Boolean safe) {
+    public void setIsSafe(Boolean safe) {
         isSafe = safe;
     }
 

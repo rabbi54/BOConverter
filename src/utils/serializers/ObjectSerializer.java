@@ -8,10 +8,7 @@ import utils.exceptions.SerializerMismatchException;
 import utils.interfaces.ByteSerialize;
 import utils.interfaces.Serializer;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -106,7 +103,9 @@ public class ObjectSerializer implements Serializer<Object> {
 
 
     private void serializeField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws Exception {
-        if (field.get(object) == null && !annotation.required()) {
+
+        Method getterMethod = getFieldGetterMethod(field);
+        if (getterMethod.invoke(object) == null && !annotation.required()) {
             return;
         }
 
@@ -124,7 +123,8 @@ public class ObjectSerializer implements Serializer<Object> {
     }
 
     private void serializeNestedField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer) throws Exception {
-        byte[] nestedSerializedData = serialize(field.get(object));
+        Method getterMethod = getFieldGetterMethod(field);
+        byte[] nestedSerializedData = serialize(getterMethod.invoke(object));
         if (nestedSerializedData == null) {
             return;
         }
@@ -133,17 +133,18 @@ public class ObjectSerializer implements Serializer<Object> {
         buffer.put(nestedSerializedData);
     }
 
-private void serializeArrayField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer, AnnotationDataClass annotationDataClass) throws Exception {
-    Serializer<Object> innerSerializer = getSerializerForArrayField(annotation, field, annotationDataClass);
-    ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
+    private void serializeArrayField(Object object, Field field, ByteSerialize annotation, ByteBuffer buffer, AnnotationDataClass annotationDataClass) throws Exception {
+        Serializer<Object> innerSerializer = getSerializerForArrayField(annotation, field, annotationDataClass);
+        ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
 
-    @SuppressWarnings("unchecked")
-    byte[] serializedData = arraySerializer.serialize((ArrayList<Object>) field.get(object), annotationDataClass);
-    if (serializedData != null) {
-        buffer.put(annotation.identifier());
-        buffer.put(serializedData);
+        Method getterMethod = getFieldGetterMethod(field);
+        @SuppressWarnings("unchecked")
+        byte[] serializedData = arraySerializer.serialize((ArrayList<Object>) getterMethod.invoke(object), annotationDataClass);
+        if (serializedData != null) {
+            buffer.put(annotation.identifier());
+            buffer.put(serializedData);
+        }
     }
-}
 
     private Serializer<Object> getSerializerForArrayField(ByteSerialize annotation, Field field, AnnotationDataClass annotationDataClass) throws Exception {
         if (annotation.innerType() == Object.class) {
@@ -163,7 +164,8 @@ private void serializeArrayField(Object object, Field field, ByteSerialize annot
         Serializer<Object> serializer = (Serializer<Object>) getSerializer(annotation.type());
 
         checkSerializerFieldCompatibility(serializer.getClass(), field.getType());
-        byte[] serializedData = serializer.serialize(field.get(object), annotationDataClass);
+        Method getterMethod = getFieldGetterMethod(field);
+        byte[] serializedData = serializer.serialize(getterMethod.invoke(object), annotationDataClass);
         if (serializedData == null) {
             return;
         }
@@ -187,7 +189,8 @@ private void serializeArrayField(Object object, Field field, ByteSerialize annot
                 deserializedValue = getObject(byteSerialize, buffer, annotationDataClass, length, field);
             }
             field.setAccessible(true);
-            field.set(object, deserializedValue);
+            Method setterMethod = getFieldSetterMethod(field);
+            setterMethod.invoke(object, deserializedValue);
         } else {
             throw new UnsupportedOperationException(clazz.getName() + " has no field for typeId: " + typeId + " position " + buffer.position());
         }
@@ -203,6 +206,18 @@ private void serializeArrayField(Object object, Field field, ByteSerialize annot
         } catch (Exception e) {
             throw new RuntimeException("Deserialization failed", e);
         }
+    }
+
+    private Method getFieldGetterMethod(Field field) throws NoSuchMethodException {
+        String fieldName = field.getName();
+        String getterMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+        return field.getDeclaringClass().getMethod(getterMethodName);
+    }
+
+    private Method getFieldSetterMethod(Field field) throws NoSuchMethodException {
+        String fieldName = field.getName();
+        String setterMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+        return field.getDeclaringClass().getMethod(setterMethodName, field.getType());
     }
 
     private Object deserializeArrayField(ByteSerialize byteSerialize, ByteBuffer buffer, AnnotationDataClass annotationDataClass, int length, Field field) throws Exception {
