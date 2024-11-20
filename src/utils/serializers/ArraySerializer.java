@@ -84,17 +84,19 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     public ArrayList<T> deserialize(byte[] data, AnnotationDataClass dataClass) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         ArrayList<T> arrayList = new ArrayList<>();
-        AnnotationDataClass newDataClass = new AnnotationDataClass(
+        AnnotationDataClass innerTypeAnnotation = new AnnotationDataClass(
                 dataClass.getType(),
                 dataClass.getIdentifier(),
                 dataClass.getLength(),
                 dataClass.getIsRequired()
         );
+        int annotationLength = innerTypeAnnotation.length;
         while (buffer.hasRemaining()) {
-            int elementLength = newDataClass.length > 0 ? newDataClass.length : getElementLength(dataClass, buffer);
+            int elementLength = annotationLength > 0 ? innerTypeAnnotation.length : getElementLength(dataClass, buffer);
             byte[] bytes = new byte[elementLength];
             buffer.get(bytes);
-            T element = elementSerializer.deserialize(bytes, newDataClass);
+            innerTypeAnnotation.setLength(elementLength);
+            T element = elementSerializer.deserialize(bytes, innerTypeAnnotation);
             arrayList.add(element);
         }
 
