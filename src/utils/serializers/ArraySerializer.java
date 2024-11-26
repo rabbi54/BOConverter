@@ -6,6 +6,8 @@ import utils.interfaces.Serializer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import static utils.SerializationConstants.MAX_BUFFER_SIZE;
+
 public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     private final Serializer<T> elementSerializer;
 
@@ -35,7 +37,7 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     }
 
     private ByteBuffer initializeBuffer() {
-        ByteBuffer buffer = ByteBuffer.allocate(1024); // Adjust size as needed
+        ByteBuffer buffer = ByteBuffer.allocate(MAX_BUFFER_SIZE); // Adjust size as needed
         buffer.position(4); // Reserve the first 4 bytes for the size
         return buffer;
     }

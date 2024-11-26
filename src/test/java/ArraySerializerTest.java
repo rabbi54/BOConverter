@@ -138,5 +138,30 @@ public class ArraySerializerTest {
             assertEquals(original.getHrss(), result.getHrss());
         }
     }
+
+    @Test
+    public void testObjectWhichSizeIsMoreThanTwoKB() {
+        SleepBinningSerializer sleepBinningSerializer = new SleepBinningSerializer();
+        ArraySerializer<SleepBinning> sleepBinningArraySerializer = new ArraySerializer<>(sleepBinningSerializer);
+        AnnotationDataClass annotationDataClass = new AnnotationDataClass(SleepBinningSerializer.class, (byte)1, 8, false);
+
+        ArrayList<SleepBinning> binnings = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            binnings.add(new SleepBinning(i, i + 1));
+        }
+
+        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, annotationDataClass);
+        byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
+        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+
+        assertEquals(binnings.size(), deserialized.size());
+        for (int i = 0; i < binnings.size(); i++) {
+            SleepBinning original = binnings.get(i);
+            SleepBinning result = deserialized.get(i);
+
+            assertEquals(original.getHrri(), result.getHrri());
+            assertEquals(original.getHrss(), result.getHrss());
+        }
+    }
 }
 

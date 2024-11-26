@@ -13,6 +13,8 @@ import java.lang.reflect.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
+import static utils.SerializationConstants.MAX_BUFFER_SIZE;
+
 public class ObjectSerializer implements Serializer<Object> {
 
     private static final Map<Class<?>, Class<?>> serializerFieldCompatibilityMap = new HashMap<>();
@@ -41,24 +43,24 @@ public class ObjectSerializer implements Serializer<Object> {
         if (object == null) {
             return null;
         }
-
-        ByteBuffer buffer = ByteBuffer.allocate(1024); // Assume 1024 bytes is enough for serialization
+        ByteBuffer buffer = ByteBuffer.allocate(MAX_BUFFER_SIZE);
 
         for (Field field : object.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(SerializedField.class)) {
-                field.setAccessible(true);
-                SerializedField annotation = field.getAnnotation(SerializedField.class);
-                try {
-                    SerializationParameter builder = new SerializationParameter.Builder()
-                            .byteSerialize(annotation)
-                            .buffer(buffer)
-                            .field(field)
-                            .object(object)
-                            .build();
-                    serializeField(builder);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+            if (!field.isAnnotationPresent(SerializedField.class)) {
+                continue;
+            }
+            field.setAccessible(true);
+            SerializedField annotation = field.getAnnotation(SerializedField.class);
+            try {
+                SerializationParameter builder = new SerializationParameter.Builder()
+                        .serializedField(annotation)
+                        .buffer(buffer)
+                        .field(field)
+                        .object(object)
+                        .build();
+                serializeField(builder);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         byte[] result = new byte[buffer.position()];
@@ -96,7 +98,7 @@ public class ObjectSerializer implements Serializer<Object> {
                 throw new NullPointerException("Class: " + clazz.getName() + " No serializer found for typeId: " + typeId + " position " + buffer.position());
             }
             SerializationParameter builder = new SerializationParameter.Builder()
-                    .byteSerialize(serializedField)
+                    .serializedField(serializedField)
                     .buffer(buffer)
                     .clazz(clazz)
                     .object(object)

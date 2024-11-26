@@ -30,7 +30,7 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
             return this;
         }
 
-        public Builder byteSerialize(SerializedField serializedField) {
+        public Builder serializedField(SerializedField serializedField) {
             this.serializedField = serializedField;
             return this;
         }
