@@ -145,7 +145,7 @@ public class ObjectSerializer implements Serializer<Object> {
         }
     }
 
-    private void serializeNestedField(SerializationParameter parameterBuilder) throws Exception {
+    private void serializeNestedField(SerializationParameter parameterBuilder) {
         Object fieldValue = getFieldValue(parameterBuilder.field(), parameterBuilder.object());
         byte[] nestedSerializedData = serialize(fieldValue);
         if (nestedSerializedData == null) {
@@ -219,7 +219,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private void setFieldValue(SerializationParameter parameterBuilder, Field field, Object deserializedValue) throws IllegalAccessException {
         field.setAccessible(true);
-        Method setterMethod = null;
+        Method setterMethod;
         try {
             setterMethod = getFieldSetterMethod(field);
             setterMethod.invoke(parameterBuilder.object(), deserializedValue);
@@ -258,7 +258,7 @@ public class ObjectSerializer implements Serializer<Object> {
         return deserializedValue;
     }
 
-    private Object getObject(SerializationParameter parameterBuilder) throws SerializerCreationException {
+    private Object getObject(SerializationParameter parameterBuilder) {
         try {
             if (parameterBuilder.byteSerialize().type() == ArraySerializer.class) {
                 return deserializeArrayField(parameterBuilder);
@@ -306,12 +306,13 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private ByteSerialize getAnnotationFromIdentifier(byte type, Class<?> clazz) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ByteSerialize.class)) {
-                field.setAccessible(true);
-                ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
-                if (annotation != null && annotation.identifier() == type) {
-                    return annotation;
-                }
+            if (!field.isAnnotationPresent(ByteSerialize.class)) {
+                continue;
+            }
+            field.setAccessible(true);
+            ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
+            if (annotation != null && annotation.identifier() == type) {
+                return annotation;
             }
         }
         return null;
@@ -319,11 +320,12 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private Field findFieldByIdentifier(Class<?> clazz, byte type) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ByteSerialize.class)) {
-                ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
-                if (annotation.identifier() == type) {
-                    return field;
-                }
+            if (!field.isAnnotationPresent(ByteSerialize.class)) {
+                continue;
+            }
+            ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
+            if (annotation.identifier() == type) {
+                return field;
             }
         }
         return null;
