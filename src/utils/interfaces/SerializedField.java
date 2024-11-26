@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ByteSerialize {
+public @interface SerializedField {
     Class<?> type() default Object.class;
     byte identifier();
     int length() default 0;

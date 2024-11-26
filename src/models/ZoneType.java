@@ -1,49 +1,49 @@
 package models;
 
-import utils.interfaces.ByteSerialize;
+import utils.interfaces.SerializedField;
 import utils.serializers.*;
 
 import java.util.ArrayList;
 
 public class ZoneType {
 
-    @ByteSerialize(type= IntegerSerializer.class, identifier = 0x10, length = 4)
+    @SerializedField(type= IntegerSerializer.class, identifier = 0x10, length = 4)
     Integer maxValue;
 
-    @ByteSerialize(type = IntegerSerializer.class, identifier = 0x11, length = 4)
+    @SerializedField(type = IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer minValue;
 
-    @ByteSerialize(type= UUIDSerializer.class, identifier = 0x75, length = 16)
+    @SerializedField(type= UUIDSerializer.class, identifier = 0x75, length = 16)
     String uuid;
 
-    @ByteSerialize(type = TimeSerializer.class, identifier = 0x13, length = 4)
+    @SerializedField(type = TimeSerializer.class, identifier = 0x13, length = 4)
     Long length;
 
-    @ByteSerialize(type = ArraySerializer.class, identifier = 0x12, length = 0, innerType = StringSerializer.class)
+    @SerializedField(type = ArraySerializer.class, identifier = 0x12, length = 0, innerType = StringSerializer.class)
     ArrayList<String> zones;
 
-    @ByteSerialize(type = LocationDataSerializer.class, identifier = 0x14, length = 8)
+    @SerializedField(type = LocationDataSerializer.class, identifier = 0x14, length = 8)
     Double latitude;
 
-    @ByteSerialize(type = LocationDataSerializer.class, identifier = 0x15, length = 8)
+    @SerializedField(type = LocationDataSerializer.class, identifier = 0x15, length = 8)
     Double longitude;
 
-    @ByteSerialize(type = BooleanSerializer.class, identifier = 0x16, length = 1)
+    @SerializedField(type = BooleanSerializer.class, identifier = 0x16, length = 1)
     Boolean isSafe;
 
-    @ByteSerialize(type = FloatSerializer.class, identifier = 0x17, length = 4)
+    @SerializedField(type = FloatSerializer.class, identifier = 0x17, length = 4)
     Float accuracy;
 
-    @ByteSerialize(type = ShortSerializer.class, identifier = 0x18, length = 2)
+    @SerializedField(type = ShortSerializer.class, identifier = 0x18, length = 2)
     Short bearing;
 
-    @ByteSerialize(type = LongSerializer.class, identifier = 0x19, length = 8)
+    @SerializedField(type = LongSerializer.class, identifier = 0x19, length = 8)
     Long altitude;
 
-    @ByteSerialize(type=ArraySerializer.class, identifier = 0x1A)
+    @SerializedField(type=ArraySerializer.class, identifier = 0x1A)
     ArrayList<Area>areas;
 
-    @ByteSerialize(type=ArraySerializer.class, identifier = 0x1B, length = 8, innerType = SleepBinningSerializer.class)
+    @SerializedField(type=ArraySerializer.class, identifier = 0x1B, length = 8, innerType = SleepBinningSerializer.class)
     ArrayList<SleepBinning>sleepBinnings;
 
     public ArrayList<SleepBinning> getSleepBinnings() {

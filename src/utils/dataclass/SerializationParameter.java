@@ -1,15 +1,15 @@
 package utils.dataclass;
 
-import utils.interfaces.ByteSerialize;
+import utils.interfaces.SerializedField;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
-public record SerializationParameter(ByteSerialize byteSerialize, ByteBuffer buffer,
+public record SerializationParameter(SerializedField serializedField, ByteBuffer buffer,
                                      AnnotationDataClass annotationDataClass, int length, Field field, Class<?> clazz, Object object, byte typeId) {
 
     public static class Builder {
-        private ByteSerialize byteSerialize;
+        private SerializedField serializedField;
         private ByteBuffer buffer;
         private AnnotationDataClass annotationDataClass;
         private int length;
@@ -19,7 +19,7 @@ public record SerializationParameter(ByteSerialize byteSerialize, ByteBuffer buf
         private byte typeId;
 
         public Builder from(SerializationParameter dataClass) {
-            this.byteSerialize = dataClass.byteSerialize();
+            this.serializedField = dataClass.serializedField();
             this.buffer = dataClass.buffer();
             this.annotationDataClass = dataClass.annotationDataClass();
             this.length = dataClass.length();
@@ -30,8 +30,8 @@ public record SerializationParameter(ByteSerialize byteSerialize, ByteBuffer buf
             return this;
         }
 
-        public Builder byteSerialize(ByteSerialize byteSerialize) {
-            this.byteSerialize = byteSerialize;
+        public Builder byteSerialize(SerializedField serializedField) {
+            this.serializedField = serializedField;
             return this;
         }
 
@@ -71,7 +71,7 @@ public record SerializationParameter(ByteSerialize byteSerialize, ByteBuffer buf
         }
 
         public SerializationParameter build() {
-            return new SerializationParameter(byteSerialize, buffer, annotationDataClass, length, field, clazz, object, typeId);
+            return new SerializationParameter(serializedField, buffer, annotationDataClass, length, field, clazz, object, typeId);
         }
     }
 }

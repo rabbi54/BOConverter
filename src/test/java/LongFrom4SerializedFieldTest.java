@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class LongFrom4ByteSerializeTest {
+public class LongFrom4SerializedFieldTest {
 
     private final LongFrom4ByteSerializer serializer = new LongFrom4ByteSerializer();
 

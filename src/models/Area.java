@@ -1,14 +1,14 @@
 package models;
 
-import utils.interfaces.ByteSerialize;
+import utils.interfaces.SerializedField;
 import utils.serializers.DoubleSerializer;
 import utils.serializers.StringSerializer;
 
 public class Area {
-    @ByteSerialize(type = StringSerializer.class, identifier = (byte)0x88)
+    @SerializedField(type = StringSerializer.class, identifier = (byte)0x88)
     private String areaName;
 
-    @ByteSerialize(type = DoubleSerializer.class, identifier = (byte)0x89, length = 8)
+    @SerializedField(type = DoubleSerializer.class, identifier = (byte)0x89, length = 8)
     private Double area;
 
     public String getAreaName() {

@@ -1,10 +1,9 @@
 package models;
 
-import utils.interfaces.ByteSerialize;
+import utils.interfaces.SerializedField;
 import utils.serializers.*;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Food {
     public Integer getFoodType() {
@@ -55,21 +54,21 @@ public class Food {
         this.zoneType = zoneType;
     }
 
-    @ByteSerialize(type = StringSerializer.class, identifier = 0x10)
+    @SerializedField(type = StringSerializer.class, identifier = 0x10)
     String foodName;
 
-    @ByteSerialize(type = UUIDSerializer.class, identifier = 0x75, length = 16)
+    @SerializedField(type = UUIDSerializer.class, identifier = 0x75, length = 16)
     String foodUUID;
 
-    @ByteSerialize(type = IntegerSerializer.class, identifier = 0x11, length = 4)
+    @SerializedField(type = IntegerSerializer.class, identifier = 0x11, length = 4)
     Integer foodType;
 
-    @ByteSerialize(type = DoubleSerializer.class, identifier = 0x12, length = 8)
+    @SerializedField(type = DoubleSerializer.class, identifier = 0x12, length = 8)
     Double foodAmount;
 
-    @ByteSerialize(type = ArraySerializer.class, identifier = 0x13, length = 8, innerType = DoubleSerializer.class)
+    @SerializedField(type = ArraySerializer.class, identifier = 0x13, length = 8, innerType = DoubleSerializer.class)
     ArrayList<Double> arrayList;
 
-    @ByteSerialize(identifier = 0x14)
+    @SerializedField(identifier = 0x14)
     ZoneType zoneType;
 }

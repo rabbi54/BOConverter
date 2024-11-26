@@ -6,7 +6,7 @@ import utils.dataclass.AnnotationDataClass;
 import utils.dataclass.SerializationParameter;
 import utils.exceptions.SerializerCreationException;
 import utils.exceptions.SerializerMismatchException;
-import utils.interfaces.ByteSerialize;
+import utils.interfaces.SerializedField;
 import utils.interfaces.Serializer;
 
 import java.lang.reflect.*;
@@ -45,9 +45,9 @@ public class ObjectSerializer implements Serializer<Object> {
         ByteBuffer buffer = ByteBuffer.allocate(1024); // Assume 1024 bytes is enough for serialization
 
         for (Field field : object.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(ByteSerialize.class)) {
+            if (field.isAnnotationPresent(SerializedField.class)) {
                 field.setAccessible(true);
-                ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
+                SerializedField annotation = field.getAnnotation(SerializedField.class);
                 try {
                     SerializationParameter builder = new SerializationParameter.Builder()
                             .byteSerialize(annotation)
@@ -91,12 +91,12 @@ public class ObjectSerializer implements Serializer<Object> {
 
         while (buffer.hasRemaining()) {
             byte typeId = buffer.get();
-            ByteSerialize byteSerialize = getAnnotationFromIdentifier(typeId, clazz);
-            if (byteSerialize == null) {
+            SerializedField serializedField = getAnnotationFromIdentifier(typeId, clazz);
+            if (serializedField == null) {
                 throw new NullPointerException("Class: " + clazz.getName() + " No serializer found for typeId: " + typeId + " position " + buffer.position());
             }
             SerializationParameter builder = new SerializationParameter.Builder()
-                    .byteSerialize(byteSerialize)
+                    .byteSerialize(serializedField)
                     .buffer(buffer)
                     .clazz(clazz)
                     .object(object)
@@ -123,11 +123,11 @@ public class ObjectSerializer implements Serializer<Object> {
     private void serializeField(SerializationParameter parameterBuilder) throws Exception {
 
         Object fieldValue = getFieldValue(parameterBuilder.field(), parameterBuilder.object());
-        if (fieldValue == null && !parameterBuilder.byteSerialize().required()) {
+        if (fieldValue == null && !parameterBuilder.serializedField().required()) {
             return;
         }
 
-        AnnotationDataClass annotationDataClass = getAnnotationDataClass(parameterBuilder.byteSerialize());
+        AnnotationDataClass annotationDataClass = getAnnotationDataClass(parameterBuilder.serializedField());
         checkSupportedSerializer(annotationDataClass.type);
 
         SerializationParameter builder = new SerializationParameter.Builder()
@@ -138,7 +138,7 @@ public class ObjectSerializer implements Serializer<Object> {
         if (annotationDataClass.type == Object.class) {
             serializeNestedField(builder);
         }
-        else if (parameterBuilder.byteSerialize().type() == ArraySerializer.class) {
+        else if (parameterBuilder.serializedField().type() == ArraySerializer.class) {
             serializeArrayField(builder);
         } else {
             serializeSimpleField(builder);
@@ -151,25 +151,25 @@ public class ObjectSerializer implements Serializer<Object> {
         if (nestedSerializedData == null) {
             return;
         }
-        parameterBuilder.buffer().put(parameterBuilder.byteSerialize().identifier());
+        parameterBuilder.buffer().put(parameterBuilder.serializedField().identifier());
         IntegerSerializer.putInt(parameterBuilder.buffer(), nestedSerializedData.length);
         parameterBuilder.buffer().put(nestedSerializedData);
     }
 
     private void serializeArrayField(SerializationParameter builder) throws Exception {
-        Serializer<Object> innerSerializer = getSerializerForArrayField(builder.byteSerialize(), builder.field(), builder.annotationDataClass());
+        Serializer<Object> innerSerializer = getSerializerForArrayField(builder.serializedField(), builder.field(), builder.annotationDataClass());
         ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
 
         Object fieldValue = getFieldValue(builder.field(), builder.object());
         @SuppressWarnings("unchecked")
         byte[] serializedData = arraySerializer.serialize((ArrayList<Object>) fieldValue, builder.annotationDataClass());
         if (serializedData != null) {
-            builder.buffer().put(builder.byteSerialize().identifier());
+            builder.buffer().put(builder.serializedField().identifier());
             builder.buffer().put(serializedData);
         }
     }
 
-    private Serializer<Object> getSerializerForArrayField(ByteSerialize annotation, Field field, AnnotationDataClass annotationDataClass) throws Exception {
+    private Serializer<Object> getSerializerForArrayField(SerializedField annotation, Field field, AnnotationDataClass annotationDataClass) throws Exception {
         if (annotation.innerType() == Object.class) {
             annotationDataClass.setType(Object.class);
             return new ObjectSerializer();
@@ -184,7 +184,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private void serializeSimpleField(SerializationParameter builder) throws Exception {
         @SuppressWarnings("unchecked")
-        Serializer<Object> serializer = (Serializer<Object>) getSerializer(builder.byteSerialize().type());
+        Serializer<Object> serializer = (Serializer<Object>) getSerializer(builder.serializedField().type());
 
         checkSerializerFieldCompatibility(serializer.getClass(), builder.field().getType());
         Object fieldValue = getFieldValue(builder.field(), builder.object());
@@ -192,13 +192,13 @@ public class ObjectSerializer implements Serializer<Object> {
         if (serializedData == null) {
             return;
         }
-        builder.buffer().put(builder.byteSerialize().identifier());
+        builder.buffer().put(builder.serializedField().identifier());
         builder.buffer().put(serializedData);
     }
 
     private void addFieldValue(SerializationParameter parameterBuilder) throws Exception {
-        int length = getLength(parameterBuilder.byteSerialize(), parameterBuilder.buffer());
-        AnnotationDataClass annotationDataClass = getAnnotationDataClass(parameterBuilder.byteSerialize());
+        int length = getLength(parameterBuilder.serializedField(), parameterBuilder.buffer());
+        AnnotationDataClass annotationDataClass = getAnnotationDataClass(parameterBuilder.serializedField());
         checkSupportedSerializer(annotationDataClass.type);
         Field field = findFieldByIdentifier(parameterBuilder.clazz(), annotationDataClass.identifier);
         Object deserializedValue;
@@ -260,7 +260,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private Object getObject(SerializationParameter parameterBuilder) {
         try {
-            if (parameterBuilder.byteSerialize().type() == ArraySerializer.class) {
+            if (parameterBuilder.serializedField().type() == ArraySerializer.class) {
                 return deserializeArrayField(parameterBuilder);
             } else {
                 return deserializeField(parameterBuilder);
@@ -283,7 +283,7 @@ public class ObjectSerializer implements Serializer<Object> {
     }
 
     private Object deserializeArrayField(SerializationParameter parameterBuilder) throws Exception {
-        if (parameterBuilder.byteSerialize().innerType() == Object.class) {
+        if (parameterBuilder.serializedField().innerType() == Object.class) {
             Class<?> innerClass = getInnerClass(parameterBuilder.field());
             parameterBuilder.annotationDataClass().setType(innerClass);
             byte[] nestedData = getBytes(parameterBuilder.buffer(), parameterBuilder.length());
@@ -291,7 +291,7 @@ public class ObjectSerializer implements Serializer<Object> {
         }
 
         @SuppressWarnings("unchecked")
-        Serializer<Object> serializer = (Serializer<Object>) getSerializer(parameterBuilder.byteSerialize().innerType());
+        Serializer<Object> serializer = (Serializer<Object>) getSerializer(parameterBuilder.serializedField().innerType());
         ArraySerializer<Object> arraySerializer = new ArraySerializer<>(serializer);
         return arraySerializer.deserialize(getBytes(parameterBuilder.buffer(), parameterBuilder.length()), parameterBuilder.annotationDataClass());
     }
@@ -299,18 +299,18 @@ public class ObjectSerializer implements Serializer<Object> {
     private Object deserializeField(SerializationParameter parameterBuilder) throws Exception {
         AnnotationDataClass annotationDataClass = parameterBuilder.annotationDataClass();
         annotationDataClass.setLength(parameterBuilder.length());
-        Serializer<?> serializer = getSerializer(parameterBuilder.byteSerialize().type());
+        Serializer<?> serializer = getSerializer(parameterBuilder.serializedField().type());
         return serializer.deserialize(getBytes(parameterBuilder.buffer(), parameterBuilder.length()), annotationDataClass);
     }
 
 
-    private ByteSerialize getAnnotationFromIdentifier(byte type, Class<?> clazz) {
+    private SerializedField getAnnotationFromIdentifier(byte type, Class<?> clazz) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (!field.isAnnotationPresent(ByteSerialize.class)) {
+            if (!field.isAnnotationPresent(SerializedField.class)) {
                 continue;
             }
             field.setAccessible(true);
-            ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
+            SerializedField annotation = field.getAnnotation(SerializedField.class);
             if (annotation != null && annotation.identifier() == type) {
                 return annotation;
             }
@@ -320,10 +320,10 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private Field findFieldByIdentifier(Class<?> clazz, byte type) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (!field.isAnnotationPresent(ByteSerialize.class)) {
+            if (!field.isAnnotationPresent(SerializedField.class)) {
                 continue;
             }
-            ByteSerialize annotation = field.getAnnotation(ByteSerialize.class);
+            SerializedField annotation = field.getAnnotation(SerializedField.class);
             if (annotation.identifier() == type) {
                 return field;
             }
@@ -341,7 +341,7 @@ public class ObjectSerializer implements Serializer<Object> {
         throw new Exception(field.getName() + " is not a parameterized type");
     }
 
-    private AnnotationDataClass getAnnotationDataClass(ByteSerialize annotation) {
+    private AnnotationDataClass getAnnotationDataClass(SerializedField annotation) {
         return new AnnotationDataClass(
                 annotation.type(),
                 annotation.identifier(),
@@ -350,9 +350,9 @@ public class ObjectSerializer implements Serializer<Object> {
         );
     }
 
-    private int getLength(ByteSerialize byteSerialize, ByteBuffer buffer) {
-        int length = byteSerialize.length();
-        if (length == 0 || byteSerialize.type() == ArraySerializer.class) { // contains variable length objects
+    private int getLength(SerializedField serializedField, ByteBuffer buffer) {
+        int length = serializedField.length();
+        if (length == 0 || serializedField.type() == ArraySerializer.class) { // contains variable length objects
             length = IntegerSerializer.getInt(buffer); // for string reads size of the strings, for array reads total bytes in the array
         }
         return length;
