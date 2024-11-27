@@ -1,8 +1,8 @@
-package utils.serializers;
+package serialization.serializers;
 
 import models.SleepBinning;
-import utils.dataclass.AnnotationDataClass;
-import utils.interfaces.Serializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
 

@@ -1,7 +1,7 @@
 package test.java;
 
 import org.junit.jupiter.api.Test;
-import utils.serializers.IntegerSerializer;
+import serialization.serializers.IntegerSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.nio.ByteBuffer;

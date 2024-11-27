@@ -2,13 +2,11 @@ package test.java;
 
 
 import org.junit.jupiter.api.Test;
-import utils.serializers.LongFrom4ByteSerializer;
-import utils.serializers.LongSerializer;
+import serialization.serializers.LongSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 
 public class LongSerializerTest {
 

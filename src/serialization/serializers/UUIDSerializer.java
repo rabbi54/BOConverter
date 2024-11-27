@@ -1,10 +1,7 @@
-package utils.serializers;
+package serialization.serializers;
 
-import utils.dataclass.AnnotationDataClass;
-import utils.interfaces.Serializer;
-
-import java.nio.ByteBuffer;
-import java.util.UUID;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.interfaces.Serializer;
 
 public class UUIDSerializer implements Serializer<String> {
 

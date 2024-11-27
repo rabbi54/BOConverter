@@ -1,7 +1,7 @@
 package test.java;
 
 import org.junit.jupiter.api.Test;
-import utils.serializers.ShortSerializer;
+import serialization.serializers.ShortSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.nio.ByteBuffer;

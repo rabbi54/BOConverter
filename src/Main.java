@@ -3,7 +3,7 @@ import models.Food;
 import models.SleepBinning;
 import models.ZoneType;
 import org.jetbrains.annotations.NotNull;
-import utils.serializers.ObjectSerializer;
+import serialization.serializers.ObjectSerializer;
 
 import java.util.ArrayList;
 

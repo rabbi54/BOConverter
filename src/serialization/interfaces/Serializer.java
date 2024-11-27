@@ -1,6 +1,6 @@
-package utils.interfaces;
+package serialization.interfaces;
 
-import utils.dataclass.AnnotationDataClass;
+import serialization.dataclass.AnnotationDataClass;
 
 public interface Serializer<T> {
     byte[] serialize(T value);

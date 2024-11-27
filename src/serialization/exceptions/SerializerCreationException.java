@@ -1,4 +1,4 @@
-package utils.exceptions;
+package serialization.exceptions;
 
 public class SerializerCreationException extends Exception {
     public SerializerCreationException() {

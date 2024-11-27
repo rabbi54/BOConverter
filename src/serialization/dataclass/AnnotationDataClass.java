@@ -1,4 +1,4 @@
-package utils.dataclass;
+package serialization.dataclass;
 
 public class AnnotationDataClass {
     private boolean isRequired;

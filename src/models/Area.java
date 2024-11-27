@@ -1,8 +1,8 @@
 package models;
 
-import utils.interfaces.SerializedField;
-import utils.serializers.DoubleSerializer;
-import utils.serializers.StringSerializer;
+import serialization.interfaces.SerializedField;
+import serialization.serializers.DoubleSerializer;
+import serialization.serializers.StringSerializer;
 
 public class Area {
     @SerializedField(type = StringSerializer.class, identifier = (byte)0x88)

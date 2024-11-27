@@ -1,7 +1,7 @@
 package test.java;
 
 import org.junit.jupiter.api.Test;
-import utils.serializers.DoubleSerializer;
+import serialization.serializers.DoubleSerializer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

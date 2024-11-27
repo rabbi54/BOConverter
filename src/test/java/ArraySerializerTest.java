@@ -2,12 +2,12 @@ package test.java;
 
 import models.SleepBinning;
 import org.junit.jupiter.api.Test;
-import utils.dataclass.AnnotationDataClass;
-import utils.interfaces.Serializer;
-import utils.serializers.ArraySerializer;
-import utils.serializers.DoubleSerializer;
-import utils.serializers.SleepBinningSerializer;
-import utils.serializers.TimeSerializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.interfaces.Serializer;
+import serialization.serializers.ArraySerializer;
+import serialization.serializers.DoubleSerializer;
+import serialization.serializers.SleepBinningSerializer;
+import serialization.serializers.TimeSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

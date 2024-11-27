@@ -1,6 +1,6 @@
-package utils.dataclass;
+package serialization.dataclass;
 
-import utils.interfaces.SerializedField;
+import serialization.interfaces.SerializedField;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;

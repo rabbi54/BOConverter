@@ -1,4 +1,4 @@
-package utils.exceptions;
+package serialization.exceptions;
 
 public class SerializerMismatchException extends Exception {
     public SerializerMismatchException() {

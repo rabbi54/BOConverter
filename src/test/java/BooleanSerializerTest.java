@@ -2,7 +2,7 @@ package test.java;
 
 
 import org.junit.jupiter.api.Test;
-import utils.serializers.BooleanSerializer;
+import serialization.serializers.BooleanSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
 

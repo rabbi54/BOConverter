@@ -2,8 +2,8 @@ package test.java;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.dataclass.AnnotationDataClass;
-import utils.serializers.TimeSerializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.serializers.TimeSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
 

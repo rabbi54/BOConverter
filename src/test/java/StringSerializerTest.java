@@ -2,8 +2,8 @@ package test.java;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import utils.dataclass.AnnotationDataClass;
-import utils.serializers.StringSerializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.serializers.StringSerializer;
 
 import java.util.Arrays;
 

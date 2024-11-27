@@ -1,7 +1,7 @@
 package models;
 
-import utils.interfaces.SerializedField;
-import utils.serializers.*;
+import serialization.interfaces.SerializedField;
+import serialization.serializers.*;
 
 import java.util.ArrayList;
 

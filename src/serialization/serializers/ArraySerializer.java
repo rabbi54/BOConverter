@@ -1,12 +1,12 @@
-package utils.serializers;
+package serialization.serializers;
 
-import utils.dataclass.AnnotationDataClass;
-import utils.interfaces.Serializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-import static utils.SerializationConstants.MAX_BUFFER_SIZE;
+import static serialization.SerializationConstants.MAX_BUFFER_SIZE;
 
 public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     private final Serializer<T> elementSerializer;

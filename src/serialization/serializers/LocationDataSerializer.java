@@ -1,12 +1,11 @@
-package utils.serializers;
+package serialization.serializers;
 
-import utils.dataclass.AnnotationDataClass;
-import utils.interfaces.Serializer;
-
+import serialization.dataclass.AnnotationDataClass;
+import serialization.interfaces.Serializer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class DoubleSerializer implements Serializer<Double> {
+public class LocationDataSerializer implements Serializer<Double> {
     @Override
     public byte[] serialize(Double value) {
         if (value == null) {
@@ -20,7 +19,7 @@ public class DoubleSerializer implements Serializer<Double> {
 
     @Override
     public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if (data == null || data.length != Double.BYTES) {
+        if (data == null || data.length != 8) {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(data);

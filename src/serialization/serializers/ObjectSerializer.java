@@ -1,19 +1,19 @@
-package utils.serializers;
+package serialization.serializers;
 
 import models.SleepBinning;
 import org.jetbrains.annotations.NotNull;
-import utils.dataclass.AnnotationDataClass;
-import utils.dataclass.SerializationParameter;
-import utils.exceptions.SerializerCreationException;
-import utils.exceptions.SerializerMismatchException;
-import utils.interfaces.SerializedField;
-import utils.interfaces.Serializer;
+import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializationParameter;
+import serialization.exceptions.SerializerCreationException;
+import serialization.exceptions.SerializerMismatchException;
+import serialization.interfaces.SerializedField;
+import serialization.interfaces.Serializer;
 
 import java.lang.reflect.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static utils.SerializationConstants.MAX_BUFFER_SIZE;
+import static serialization.SerializationConstants.MAX_BUFFER_SIZE;
 
 public class ObjectSerializer implements Serializer<Object> {
 
