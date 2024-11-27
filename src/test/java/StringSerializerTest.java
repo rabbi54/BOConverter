@@ -100,9 +100,7 @@ class StringSerializerTest {
 
     @Test
     void testDeserializeNullAnnotationDataClass() {
-        assertThrows(NullPointerException.class, () -> {
-            serializer.serialize("Test", null);
-        });
+        assertThrows(NullPointerException.class, () -> serializer.serialize("Test", null));
     }
 }
 

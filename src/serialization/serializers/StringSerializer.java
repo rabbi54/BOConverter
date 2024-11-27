@@ -15,11 +15,7 @@ public class StringSerializer implements Serializer<String> {
 
     @Override
     public byte[] serialize(String value, AnnotationDataClass dataClass) {
-        /**
-         * If the length specified in the annotation is not provided, the serializer
-         * will prefix the serialized string with its length. Otherwise, if the length
-         * is specified in the annotation, the string length will not be prefixed.
-         */
+         // Prefix the length if length is not specified in annotation else not
         if (value == null) {
             value = getDefaultValue();
         }
