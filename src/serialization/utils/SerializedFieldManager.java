@@ -45,7 +45,7 @@ public class SerializedFieldManager {
         throw new Exception(field.getName() + " is not a parameterized type");
     }
 
-    public SerializedFieldAttributes getAnnotationDataClass(SerializedField annotation) {
+    public SerializedFieldAttributes getSerializedFieldAttributes(SerializedField annotation) {
         return new SerializedFieldAttributes(
                 annotation.type(),
                 annotation.identifier(),

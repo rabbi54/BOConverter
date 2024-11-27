@@ -19,7 +19,9 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private final ReflectionUtil reflectionUtil = new ReflectionUtil();
     private final SerializedFieldManager serializedFieldManager = new SerializedFieldManager();
-    public ObjectSerializer() {}
+
+    public ObjectSerializer() {
+    }
 
     public byte[] serialize(Object object) {
         if (object == null) {
@@ -58,7 +60,8 @@ public class ObjectSerializer implements Serializer<Object> {
 
         try {
             return (Serializer<T>) clazz.getDeclaredConstructor().newInstance();
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             throw new SerializerCreationException("Failed to create serializer for class: " + clazz.getName(), e);
         }
     }
@@ -70,7 +73,7 @@ public class ObjectSerializer implements Serializer<Object> {
             return;
         }
 
-        SerializedFieldAttributes serializedFieldAttributes = serializedFieldManager.getAnnotationDataClass(parameterBuilder.serializedField());
+        SerializedFieldAttributes serializedFieldAttributes = serializedFieldManager.getSerializedFieldAttributes(parameterBuilder.serializedField());
         SerializationCompatibilityValidator.checkSupportedSerializer(serializedFieldAttributes.type);
 
         SerializationParameter builder = new SerializationParameter.Builder()
@@ -80,8 +83,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
         if (serializedFieldAttributes.type == Object.class) {
             serializeNestedField(builder);
-        }
-        else if (parameterBuilder.serializedField().type() == ArraySerializer.class) {
+        } else if (parameterBuilder.serializedField().type() == ArraySerializer.class) {
             serializeArrayField(builder);
         } else {
             serializeSimpleField(builder);
@@ -181,7 +183,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private void addFieldValue(SerializationParameter parameterBuilder) throws Exception {
         int length = getLength(parameterBuilder.serializedField(), parameterBuilder.buffer());
-        SerializedFieldAttributes serializedFieldAttributes = serializedFieldManager.getAnnotationDataClass(parameterBuilder.serializedField());
+        SerializedFieldAttributes serializedFieldAttributes = serializedFieldManager.getSerializedFieldAttributes(parameterBuilder.serializedField());
         SerializationCompatibilityValidator.checkSupportedSerializer(serializedFieldAttributes.type);
         Field field = serializedFieldManager.findFieldByIdentifier(parameterBuilder.clazz(), serializedFieldAttributes.identifier);
         Object deserializedValue;
@@ -205,8 +207,7 @@ public class ObjectSerializer implements Serializer<Object> {
         if (parameterBuilder.serializedFieldAttributes().type == Object.class) {
             byte[] nestedData = getBytes(parameterBuilder.buffer(), parameterBuilder.length());
             deserializedValue = deserialize(nestedData, parameterBuilder.field().getType());
-        }
-        else {
+        } else {
             SerializationCompatibilityValidator.checkSerializerFieldCompatibility(parameterBuilder.serializedFieldAttributes().type, parameterBuilder.field().getType());
             deserializedValue = getObject(parameterBuilder);
         }
