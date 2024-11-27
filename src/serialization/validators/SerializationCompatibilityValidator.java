@@ -1,4 +1,4 @@
-package serialization.utils;
+package serialization.validators;
 
 import models.SleepBinning;
 import org.jetbrains.annotations.NotNull;

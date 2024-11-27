@@ -1,4 +1,4 @@
-package serialization.utils;
+package serialization.managers;
 
 import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.SerializedField;

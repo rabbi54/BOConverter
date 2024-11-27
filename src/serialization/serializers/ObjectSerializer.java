@@ -5,9 +5,9 @@ import serialization.dataclass.SerializationParameter;
 import serialization.exceptions.SerializerCreationException;
 import serialization.interfaces.SerializedField;
 import serialization.interfaces.Serializer;
-import serialization.utils.SerializedFieldManager;
-import serialization.utils.ReflectionUtil;
-import serialization.utils.SerializationCompatibilityValidator;
+import serialization.managers.SerializedFieldManager;
+import serialization.managers.ReflectionManager;
+import serialization.validators.SerializationCompatibilityValidator;
 
 import java.lang.reflect.*;
 import java.nio.ByteBuffer;
@@ -17,7 +17,7 @@ import static serialization.SerializationConstants.MAX_BUFFER_SIZE;
 
 public class ObjectSerializer implements Serializer<Object> {
 
-    private final ReflectionUtil reflectionUtil = new ReflectionUtil();
+    private final ReflectionManager reflectionManager = new ReflectionManager();
     private final SerializedFieldManager serializedFieldManager = new SerializedFieldManager();
 
     public ObjectSerializer() {
@@ -68,7 +68,7 @@ public class ObjectSerializer implements Serializer<Object> {
 
     private void serializeField(SerializationParameter parameterBuilder) throws Exception {
 
-        Object fieldValue = reflectionUtil.getFieldValue(parameterBuilder.field(), parameterBuilder.object());
+        Object fieldValue = reflectionManager.getFieldValue(parameterBuilder.field(), parameterBuilder.object());
         if (fieldValue == null && !parameterBuilder.serializedField().required()) {
             return;
         }
@@ -91,7 +91,7 @@ public class ObjectSerializer implements Serializer<Object> {
     }
 
     private void serializeNestedField(SerializationParameter parameterBuilder) {
-        Object fieldValue = reflectionUtil.getFieldValue(parameterBuilder.field(), parameterBuilder.object());
+        Object fieldValue = reflectionManager.getFieldValue(parameterBuilder.field(), parameterBuilder.object());
         byte[] nestedSerializedData = serialize(fieldValue);
         if (nestedSerializedData == null) {
             return;
@@ -105,7 +105,7 @@ public class ObjectSerializer implements Serializer<Object> {
         Serializer<Object> innerSerializer = getSerializerForArrayField(builder.serializedField(), builder.field(), builder.serializedFieldAttributes());
         ArraySerializer<Object> arraySerializer = new ArraySerializer<>(innerSerializer);
 
-        Object fieldValue = reflectionUtil.getFieldValue(builder.field(), builder.object());
+        Object fieldValue = reflectionManager.getFieldValue(builder.field(), builder.object());
         @SuppressWarnings("unchecked")
         byte[] serializedData = arraySerializer.serialize((ArrayList<Object>) fieldValue, builder.serializedFieldAttributes());
         if (serializedData != null) {
@@ -132,7 +132,7 @@ public class ObjectSerializer implements Serializer<Object> {
         Serializer<Object> serializer = (Serializer<Object>) getSerializer(builder.serializedField().type());
 
         SerializationCompatibilityValidator.checkSerializerFieldCompatibility(serializer.getClass(), builder.field().getType());
-        Object fieldValue = reflectionUtil.getFieldValue(builder.field(), builder.object());
+        Object fieldValue = reflectionManager.getFieldValue(builder.field(), builder.object());
         byte[] serializedData = serializer.serialize(fieldValue, builder.serializedFieldAttributes());
         if (serializedData == null) {
             return;
@@ -199,7 +199,7 @@ public class ObjectSerializer implements Serializer<Object> {
                 .length(length)
                 .build();
         deserializedValue = getDeserializedValue(builder);
-        reflectionUtil.setFieldValue(parameterBuilder, field, deserializedValue);
+        reflectionManager.setFieldValue(parameterBuilder, field, deserializedValue);
     }
 
     private Object getDeserializedValue(SerializationParameter parameterBuilder) throws Exception {
