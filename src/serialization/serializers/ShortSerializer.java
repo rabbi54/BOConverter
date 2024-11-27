@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -20,7 +20,7 @@ public class ShortSerializer implements Serializer<Short> {
     }
 
     @Override
-    public Short deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Short deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != Short.BYTES) {
             return null;
         }

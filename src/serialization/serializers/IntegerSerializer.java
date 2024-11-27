@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -19,7 +19,7 @@ public class IntegerSerializer implements Serializer<Integer> {
     }
 
     @Override
-    public Integer deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Integer deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != Integer.BYTES) {
             return null;
         }

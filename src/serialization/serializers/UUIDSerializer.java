@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 public class UUIDSerializer implements Serializer<String> {
@@ -24,7 +24,7 @@ public class UUIDSerializer implements Serializer<String> {
     }
 
     @Override
-    public String deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public String deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length < 15) {
             return null;
         }

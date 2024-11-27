@@ -1,12 +1,12 @@
 package serialization.dataclass;
 
-public class AnnotationDataClass {
+public class SerializedFieldAttributes {
     private boolean isRequired;
     public Class<?> type;
     public byte identifier;
     public int length;
 
-    public AnnotationDataClass(Class<?> type, byte identifier, int length, boolean isRequired) {
+    public SerializedFieldAttributes(Class<?> type, byte identifier, int length, boolean isRequired) {
         this.type = type;
         this.identifier = identifier;
         this.length = length;

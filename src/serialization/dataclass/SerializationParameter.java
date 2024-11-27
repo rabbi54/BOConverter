@@ -6,12 +6,12 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 public record SerializationParameter(SerializedField serializedField, ByteBuffer buffer,
-                                     AnnotationDataClass annotationDataClass, int length, Field field, Class<?> clazz, Object object, byte typeId) {
+                                     SerializedFieldAttributes serializedFieldAttributes, int length, Field field, Class<?> clazz, Object object, byte typeId) {
 
     public static class Builder {
         private SerializedField serializedField;
         private ByteBuffer buffer;
-        private AnnotationDataClass annotationDataClass;
+        private SerializedFieldAttributes serializedFieldAttributes;
         private int length;
         private Field field;
         private Class<?> clazz;
@@ -21,7 +21,7 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
         public Builder from(SerializationParameter dataClass) {
             this.serializedField = dataClass.serializedField();
             this.buffer = dataClass.buffer();
-            this.annotationDataClass = dataClass.annotationDataClass();
+            this.serializedFieldAttributes = dataClass.serializedFieldAttributes();
             this.length = dataClass.length();
             this.field = dataClass.field();
             this.clazz = dataClass.clazz();
@@ -40,8 +40,8 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
             return this;
         }
 
-        public Builder annotationDataClass(AnnotationDataClass annotationDataClass) {
-            this.annotationDataClass = annotationDataClass;
+        public Builder annotationDataClass(SerializedFieldAttributes serializedFieldAttributes) {
+            this.serializedFieldAttributes = serializedFieldAttributes;
             return this;
         }
 
@@ -71,7 +71,7 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
         }
 
         public SerializationParameter build() {
-            return new SerializationParameter(serializedField, buffer, annotationDataClass, length, field, clazz, object, typeId);
+            return new SerializationParameter(serializedField, buffer, serializedFieldAttributes, length, field, clazz, object, typeId);
         }
     }
 }

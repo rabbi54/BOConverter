@@ -2,7 +2,7 @@ package test.java;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.serializers.TimeSerializer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimeSerializerTest {
 
     private TimeSerializer timeSerializer;
-    private AnnotationDataClass annotationDataClass;
+    private SerializedFieldAttributes serializedFieldAttributes;
 
     @BeforeEach
     void setUp() {
         timeSerializer = new TimeSerializer();
-        annotationDataClass = null;
+        serializedFieldAttributes = null;
     }
 
     @Test
@@ -52,28 +52,28 @@ class TimeSerializerTest {
 
     @Test
     void testDeserialize_NullData() {
-        Long result = timeSerializer.deserialize(null, annotationDataClass);
+        Long result = timeSerializer.deserialize(null, serializedFieldAttributes);
         assertNull(result, "Deserializing null data should return null.");
     }
 
     @Test
     void testDeserialize_ZeroBytes() {
         byte[] data = {0, 0, 0, 0};
-        Long result = timeSerializer.deserialize(data, annotationDataClass);
+        Long result = timeSerializer.deserialize(data, serializedFieldAttributes);
         assertEquals(0L, result, "Deserializing zero bytes should return 0L.");
     }
 
     @Test
     void testDeserialize_MinimumTimeBytes() {
         byte[] data = {0, 0, 0, 0};
-        Long result = timeSerializer.deserialize(data, annotationDataClass);
+        Long result = timeSerializer.deserialize(data, serializedFieldAttributes);
         assertEquals(0, result, "Deserializing zero bytes should return the minimum time.");
     }
 
     @Test
     void testDeserialize_MaximumTimeBytes() {
         byte[] data = {-1, -1, -1, -1};
-        Long result = timeSerializer.deserialize(data, annotationDataClass);
+        Long result = timeSerializer.deserialize(data, serializedFieldAttributes);
         assertEquals(4294967295L * 1000 + 631152000000L, result, "Deserializing 4 FF bytes should return the maximum time.");
     }
 
@@ -81,7 +81,7 @@ class TimeSerializerTest {
     void testSerializeAndDeserialize() {
         long originalValue = System.currentTimeMillis();
         byte[] serializedData = timeSerializer.serialize(originalValue);
-        Long deserializedValue = timeSerializer.deserialize(serializedData, annotationDataClass);
+        Long deserializedValue = timeSerializer.deserialize(serializedData, serializedFieldAttributes);
         assertEquals(originalValue / 1000 * 1000, deserializedValue, "Deserialized value should match the original (rounded to the nearest second).");
     }
 }

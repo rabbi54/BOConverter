@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -14,7 +14,7 @@ public class StringSerializer implements Serializer<String> {
     }
 
     @Override
-    public byte[] serialize(String value, AnnotationDataClass dataClass) {
+    public byte[] serialize(String value, SerializedFieldAttributes dataClass) {
          // Prefix the length if length is not specified in annotation else not
         if (value == null) {
             value = getDefaultValue();
@@ -38,8 +38,8 @@ public class StringSerializer implements Serializer<String> {
     }
 
     @Override
-    public String deserialize(byte[] data, AnnotationDataClass dataClass) {
-        if(data == null || data.length != dataClass.length) {
+    public String deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
+        if(data == null || data.length != fieldAttributes.length) {
             return null;
         }
 

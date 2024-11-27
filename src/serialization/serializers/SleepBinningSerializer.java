@@ -1,7 +1,7 @@
 package serialization.serializers;
 
 import models.SleepBinning;
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -20,7 +20,7 @@ public class SleepBinningSerializer implements Serializer<SleepBinning> {
     }
 
     @Override
-    public SleepBinning deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public SleepBinning deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null) {
             return null;
         }

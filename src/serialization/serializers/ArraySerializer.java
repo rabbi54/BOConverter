@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -22,16 +22,16 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
     }
 
     @Override
-    public byte[] serialize(ArrayList<T> array, AnnotationDataClass annotationDataClass) {
+    public byte[] serialize(ArrayList<T> array, SerializedFieldAttributes serializedFieldAttributes) {
         if (array == null) {
             array = getDefaultValue();
         }
         ArrayList<T> arrayList = array;
         ByteBuffer buffer = initializeBuffer();
-        serializeArrayElements(arrayList, annotationDataClass, buffer);
+        serializeArrayElements(arrayList, serializedFieldAttributes, buffer);
 
         int totalLength = buffer.position() - 4;
-        updatePrefix(buffer, annotationDataClass, arrayList.size(), totalLength);
+        updatePrefix(buffer, serializedFieldAttributes, arrayList.size(), totalLength);
 
         return finalizeBuffer(buffer);
     }
@@ -42,18 +42,18 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
         return buffer;
     }
 
-    private void serializeArrayElements(ArrayList<T> arrayList, AnnotationDataClass annotationDataClass, ByteBuffer buffer) {
+    private void serializeArrayElements(ArrayList<T> arrayList, SerializedFieldAttributes serializedFieldAttributes, ByteBuffer buffer) {
         for (T element : arrayList) {
-            byte[] serializedElement = serializeElement(element, annotationDataClass);
+            byte[] serializedElement = serializeElement(element, serializedFieldAttributes);
             buffer.put(serializedElement);
         }
     }
 
-    private byte[] serializeElement(T element, AnnotationDataClass annotationDataClass) {
+    private byte[] serializeElement(T element, SerializedFieldAttributes serializedFieldAttributes) {
         try {
-            byte[] serializedData = elementSerializer.serialize(element, annotationDataClass);
+            byte[] serializedData = elementSerializer.serialize(element, serializedFieldAttributes);
 
-            if (annotationDataClass.type == Object.class) {
+            if (serializedFieldAttributes.type == Object.class) {
                 ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES + serializedData.length);
                 IntegerSerializer.putInt(buffer, serializedData.length);
                 buffer.put(serializedData);
@@ -66,9 +66,9 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
         }
     }
 
-    private void updatePrefix(ByteBuffer buffer, AnnotationDataClass annotationDataClass, int arraySize, int totalLength) {
-        if (annotationDataClass.length != 0) {
-            IntegerSerializer.putInt(buffer, arraySize * annotationDataClass.length, 0);
+    private void updatePrefix(ByteBuffer buffer, SerializedFieldAttributes serializedFieldAttributes, int arraySize, int totalLength) {
+        if (serializedFieldAttributes.length != 0) {
+            IntegerSerializer.putInt(buffer, arraySize * serializedFieldAttributes.length, 0);
         } else {
             IntegerSerializer.putInt(buffer, totalLength, 0);
         }
@@ -83,18 +83,18 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
 
 
     @Override
-    public ArrayList<T> deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public ArrayList<T> deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         ArrayList<T> arrayList = new ArrayList<>();
-        AnnotationDataClass innerTypeAnnotation = new AnnotationDataClass(
-                dataClass.getType(),
-                dataClass.getIdentifier(),
-                dataClass.getLength(),
-                dataClass.getIsRequired()
+        SerializedFieldAttributes innerTypeAnnotation = new SerializedFieldAttributes(
+                fieldAttributes.getType(),
+                fieldAttributes.getIdentifier(),
+                fieldAttributes.getLength(),
+                fieldAttributes.getIsRequired()
         );
         int annotationLength = innerTypeAnnotation.length;
         while (buffer.hasRemaining()) {
-            int elementLength = annotationLength > 0 ? innerTypeAnnotation.length : getElementLength(dataClass, buffer);
+            int elementLength = annotationLength > 0 ? innerTypeAnnotation.length : getElementLength(fieldAttributes, buffer);
             byte[] bytes = new byte[elementLength];
             buffer.get(bytes);
             innerTypeAnnotation.setLength(elementLength);
@@ -105,8 +105,8 @@ public class ArraySerializer<T> implements Serializer<ArrayList<T>> {
         return arrayList;
     }
 
-    private int getElementLength(AnnotationDataClass dataClass, ByteBuffer buffer) {
-        int elementLength = dataClass.length;
+    private int getElementLength(SerializedFieldAttributes fieldAttributes, ByteBuffer buffer) {
+        int elementLength = fieldAttributes.length;
         if (elementLength == 0) {
             elementLength = IntegerSerializer.getInt(buffer);
         }

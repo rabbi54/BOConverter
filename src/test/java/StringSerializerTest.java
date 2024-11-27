@@ -2,7 +2,7 @@ package test.java;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.serializers.StringSerializer;
 
 import java.util.Arrays;
@@ -14,7 +14,7 @@ class StringSerializerTest {
     @Test
     void testSerializeWithLengthPrefix() {
         String value = "Hello, World!";
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, 0, true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, 0, true);
         byte[] result = serializer.serialize(value, annotation);
 
         assertNotNull(result);
@@ -32,7 +32,7 @@ class StringSerializerTest {
     @Test
     void testSerializeWithoutLengthPrefix() {
         String value = "Hello, World!";
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, value.length(), true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, value.length(), true);
         byte[] result = serializer.serialize(value, annotation);
 
         assertNotNull(result);
@@ -45,7 +45,7 @@ class StringSerializerTest {
     @Test
     void testSerializeNullValue() {
         String value = null;
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, 0, true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, 0, true);
         byte[] result = serializer.serialize(value, annotation);
 
         assertNotNull(result);
@@ -59,7 +59,7 @@ class StringSerializerTest {
     @Test
     void testDeserializeWithLengthPrefix() {
         String value = "Hello, World!";
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, 0, true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, 0, true);
         byte[] result = serializer.serialize(value, annotation);
         int length = (result[3] << 24) + ((result[2] & 0xFF) << 16) + ((result[1] & 0xFF) << 8) + (result[0] & 0xFF);
         annotation.setLength(length);
@@ -72,7 +72,7 @@ class StringSerializerTest {
     @Test
     void testDeserializeWithoutLengthPrefix() {
         String value = "Hello, World!";
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, value.length(), true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, value.length(), true);
         byte[] data = serializer.serialize(value, annotation);
         String result = serializer.deserialize(data, annotation);
 
@@ -82,7 +82,7 @@ class StringSerializerTest {
 
     @Test
     void testDeserializeNullData() {
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, 0, true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, 0, true);
         String result = serializer.deserialize(null, annotation);
 
         assertNull(result);
@@ -91,7 +91,7 @@ class StringSerializerTest {
     @Test
     void testDeserializeIncorrectLength() {
         String value = "Hello";
-        AnnotationDataClass annotation = new AnnotationDataClass(String.class, (byte)1, 10, true);
+        SerializedFieldAttributes annotation = new SerializedFieldAttributes(String.class, (byte)1, 10, true);
         byte[] data = value.getBytes();
         String result = serializer.deserialize(data, annotation);
 

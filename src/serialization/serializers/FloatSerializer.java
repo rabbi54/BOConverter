@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -20,7 +20,7 @@ public class FloatSerializer implements Serializer<Float> {
     }
 
     @Override
-    public Float deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Float deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != Float.BYTES) {
             return null;
         }

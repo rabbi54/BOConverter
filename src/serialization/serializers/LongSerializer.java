@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -19,7 +19,7 @@ public class LongSerializer implements Serializer<Long> {
     }
 
     @Override
-    public Long deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Long deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != 8) {
             return null;
         }

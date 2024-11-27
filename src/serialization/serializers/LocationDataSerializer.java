@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -18,7 +18,7 @@ public class LocationDataSerializer implements Serializer<Double> {
     }
 
     @Override
-    public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Double deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != 8) {
             return null;
         }

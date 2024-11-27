@@ -2,7 +2,7 @@ package test.java;
 
 import models.SleepBinning;
 import org.junit.jupiter.api.Test;
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 import serialization.serializers.ArraySerializer;
 import serialization.serializers.DoubleSerializer;
@@ -21,16 +21,16 @@ public class ArraySerializerTest {
 
         Serializer<Double> innerSerializer = new DoubleSerializer();
         ArraySerializer<Double> doubleArraySerializer = new ArraySerializer<>(innerSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(ArrayList.class, (byte)0x12, 8, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(ArrayList.class, (byte)0x12, 8, false);
 
         ArrayList<Double> doubleArray = new ArrayList<>();
         doubleArray.add(1.23);
         doubleArray.add(4.56);
         doubleArray.add(7.89);
 
-        byte[] serialized = doubleArraySerializer.serialize(doubleArray, annotationDataClass);
+        byte[] serialized = doubleArraySerializer.serialize(doubleArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(doubleArray, deserialized);
     }
@@ -39,15 +39,15 @@ public class ArraySerializerTest {
     public void testTimeArraySerialization() {
         TimeSerializer timeSerializer = new TimeSerializer();
         ArraySerializer<Long> timeArraySerializer = new ArraySerializer<>(timeSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(Long.class, (byte)(1), 4, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(Long.class, (byte)(1), 4, false);
 
         ArrayList<Long> timeArray = new ArrayList<>();
         timeArray.add(1629216000000L); // Example timestamp
         timeArray.add(1629302400000L); // Another timestamp
 
-        byte[] serialized = timeArraySerializer.serialize(timeArray, annotationDataClass);
+        byte[] serialized = timeArraySerializer.serialize(timeArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(timeArray, deserialized);
     }
@@ -56,13 +56,13 @@ public class ArraySerializerTest {
     public void testEmptyDoubleArraySerialization() {
         DoubleSerializer doubleSerializer = new DoubleSerializer();
         ArraySerializer<Double> doubleArraySerializer = new ArraySerializer<>(doubleSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(Double.class, (byte)1, 8, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(Double.class, (byte)1, 8, false);
 
         ArrayList<Double> doubleArray = new ArrayList<>();
 
-        byte[] serialized = doubleArraySerializer.serialize(doubleArray, annotationDataClass);
+        byte[] serialized = doubleArraySerializer.serialize(doubleArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(doubleArray, deserialized);
     }
@@ -71,13 +71,13 @@ public class ArraySerializerTest {
     public void testEmptyTimeArraySerialization() {
         TimeSerializer timeSerializer = new TimeSerializer();
         ArraySerializer<Long> timeArraySerializer = new ArraySerializer<>(timeSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(Long.class, (byte)1, 4, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(Long.class, (byte)1, 4, false);
 
         ArrayList<Long> timeArray = new ArrayList<>();
 
-        byte[] serialized = timeArraySerializer.serialize(timeArray, annotationDataClass);
+        byte[] serialized = timeArraySerializer.serialize(timeArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(timeArray, deserialized);
     }
@@ -86,14 +86,14 @@ public class ArraySerializerTest {
     public void testSingleElementDoubleArraySerialization() {
         DoubleSerializer doubleSerializer = new DoubleSerializer();
         ArraySerializer<Double> doubleArraySerializer = new ArraySerializer<>(doubleSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(Double.class, (byte)1, 8, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(Double.class, (byte)1, 8, false);
 
         ArrayList<Double> doubleArray = new ArrayList<>();
         doubleArray.add(42.42);
 
-        byte[] serialized = doubleArraySerializer.serialize(doubleArray, annotationDataClass);
+        byte[] serialized = doubleArraySerializer.serialize(doubleArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Double> deserialized = doubleArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(doubleArray, deserialized);
     }
@@ -102,14 +102,14 @@ public class ArraySerializerTest {
     public void testSingleElementTimeArraySerialization() {
         TimeSerializer timeSerializer = new TimeSerializer();
         ArraySerializer<Long> timeArraySerializer = new ArraySerializer<>(timeSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(Long.class, (byte)1, 4, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(Long.class, (byte)1, 4, false);
 
         ArrayList<Long> timeArray = new ArrayList<>();
         timeArray.add(1629216000000L);
 
-        byte[] serialized = timeArraySerializer.serialize(timeArray, annotationDataClass);
+        byte[] serialized = timeArraySerializer.serialize(timeArray, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<Long> deserialized = timeArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(timeArray, deserialized);
     }
@@ -118,16 +118,16 @@ public class ArraySerializerTest {
     public void testObjectArraySerializationNoObjectLengthPrefix() {
         SleepBinningSerializer sleepBinningSerializer = new SleepBinningSerializer();
         ArraySerializer<SleepBinning> sleepBinningArraySerializer = new ArraySerializer<>(sleepBinningSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(SleepBinningSerializer.class, (byte)1, 8, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(SleepBinningSerializer.class, (byte)1, 8, false);
 
         ArrayList<SleepBinning> binnings = new ArrayList<>();
         binnings.add(new SleepBinning(1, 2));
         binnings.add(new SleepBinning(3, 4));
         binnings.add(new SleepBinning(5, 6));
 
-        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, annotationDataClass);
+        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(binnings.size(), deserialized.size());
         for (int i = 0; i < binnings.size(); i++) {
@@ -143,16 +143,16 @@ public class ArraySerializerTest {
     public void testObjectWhichSizeIsMoreThanTwoKB() {
         SleepBinningSerializer sleepBinningSerializer = new SleepBinningSerializer();
         ArraySerializer<SleepBinning> sleepBinningArraySerializer = new ArraySerializer<>(sleepBinningSerializer);
-        AnnotationDataClass annotationDataClass = new AnnotationDataClass(SleepBinningSerializer.class, (byte)1, 8, false);
+        SerializedFieldAttributes serializedFieldAttributes = new SerializedFieldAttributes(SleepBinningSerializer.class, (byte)1, 8, false);
 
         ArrayList<SleepBinning> binnings = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
             binnings.add(new SleepBinning(i, i + 1));
         }
 
-        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, annotationDataClass);
+        byte[] serialized = sleepBinningArraySerializer.serialize(binnings, serializedFieldAttributes);
         byte[] withoutPrefix = Arrays.copyOfRange(serialized, 4, serialized.length);
-        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, annotationDataClass);
+        ArrayList<SleepBinning> deserialized = sleepBinningArraySerializer.deserialize(withoutPrefix, serializedFieldAttributes);
 
         assertEquals(binnings.size(), deserialized.size());
         for (int i = 0; i < binnings.size(); i++) {

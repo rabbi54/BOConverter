@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 public class TimeSerializer implements Serializer<Long> {
@@ -54,7 +54,7 @@ public class TimeSerializer implements Serializer<Long> {
     }
 
     @Override
-    public Long deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Long deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length < 4) {
             return null;
         }

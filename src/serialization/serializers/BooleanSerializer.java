@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -18,7 +18,7 @@ public class BooleanSerializer implements Serializer<Boolean> {
     }
 
     @Override
-    public Boolean deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Boolean deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null) {
             return null;
         }

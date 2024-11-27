@@ -1,6 +1,6 @@
 package serialization.serializers;
 
-import serialization.dataclass.AnnotationDataClass;
+import serialization.dataclass.SerializedFieldAttributes;
 import serialization.interfaces.Serializer;
 
 import java.nio.ByteBuffer;
@@ -19,7 +19,7 @@ public class DoubleSerializer implements Serializer<Double> {
     }
 
     @Override
-    public Double deserialize(byte[] data, AnnotationDataClass dataClass) {
+    public Double deserialize(byte[] data, SerializedFieldAttributes fieldAttributes) {
         if (data == null || data.length != Double.BYTES) {
             return null;
         }
