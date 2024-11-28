@@ -1,13 +1,13 @@
 package serialization.managers;
 
-import serialization.dataclass.SerializationParameter;
+import serialization.dataclass.SerializationContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ReflectionManager {
-    public void setFieldValue(SerializationParameter parameterBuilder, Field field, Object deserializedValue) throws IllegalAccessException {
+    public void setFieldValue(SerializationContext parameterBuilder, Field field, Object deserializedValue) throws IllegalAccessException {
         field.setAccessible(true);
         Method setterMethod;
         try {

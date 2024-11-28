@@ -5,8 +5,8 @@ import serialization.interfaces.SerializedField;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
-public record SerializationParameter(SerializedField serializedField, ByteBuffer buffer,
-                                     SerializedFieldAttributes serializedFieldAttributes, int length, Field field, Class<?> clazz, Object object, byte typeId) {
+public record SerializationContext(SerializedField serializedField, ByteBuffer buffer,
+                                   SerializedFieldAttributes serializedFieldAttributes, int length, Field field, Class<?> clazz, Object object, byte typeId) {
 
     public static class Builder {
         private SerializedField serializedField;
@@ -18,7 +18,7 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
         private Object object;
         private byte typeId;
 
-        public Builder from(SerializationParameter dataClass) {
+        public Builder from(SerializationContext dataClass) {
             this.serializedField = dataClass.serializedField();
             this.buffer = dataClass.buffer();
             this.serializedFieldAttributes = dataClass.serializedFieldAttributes();
@@ -70,8 +70,8 @@ public record SerializationParameter(SerializedField serializedField, ByteBuffer
             return this;
         }
 
-        public SerializationParameter build() {
-            return new SerializationParameter(serializedField, buffer, serializedFieldAttributes, length, field, clazz, object, typeId);
+        public SerializationContext build() {
+            return new SerializationContext(serializedField, buffer, serializedFieldAttributes, length, field, clazz, object, typeId);
         }
     }
 }
