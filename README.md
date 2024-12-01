@@ -85,7 +85,7 @@ This example uses `yourObject` and `YourClass` as placeholders to represent any 
 
 ## Drawbacks
 
-- **Limited Array Support**: Currently, the converter only supports arrays of simple objects like `long`, `float`, `double`, and other supported types. Complex or nested arrays are not supported.
+- **Limited Array Support**: Currently, the converter only supports ArrayList
 
 ---
 
