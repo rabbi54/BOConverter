@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.UUIDSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.004">
+  <properties/>
+  <testcase name="testDeserialize_InvalidData()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testGetType()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_NullData()" classname="boconverter.UUIDSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_ValidData()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testGetDefaultValue()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NullUUID()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_EmptyUUID()" classname="boconverter.UUIDSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_ValidUUID()" classname="boconverter.UUIDSerializerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

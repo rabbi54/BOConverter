@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.IntegerSerializerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.003">
+  <properties/>
+  <testcase name="testGetIntWithIndex()" classname="boconverter.IntegerSerializerTest" time="0.0"/>
+  <testcase name="testSerialize()" classname="boconverter.IntegerSerializerTest" time="0.001"/>
+  <testcase name="testPutIntWithIndex()" classname="boconverter.IntegerSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize()" classname="boconverter.IntegerSerializerTest" time="0.001"/>
+  <testcase name="testGetInt()" classname="boconverter.IntegerSerializerTest" time="0.0"/>
+  <testcase name="testPutInt()" classname="boconverter.IntegerSerializerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

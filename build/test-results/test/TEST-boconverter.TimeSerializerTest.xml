@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.TimeSerializerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.006">
+  <properties/>
+  <testcase name="testSerializeAndDeserialize()" classname="boconverter.TimeSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_ZeroValue()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NullValue()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_NullData()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_MinimumTime()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_MaximumTime()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_ZeroBytes()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_MinimumTimeBytes()" classname="boconverter.TimeSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_MaximumTimeBytes()" classname="boconverter.TimeSerializerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

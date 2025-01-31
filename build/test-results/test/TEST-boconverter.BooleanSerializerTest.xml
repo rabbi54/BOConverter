@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.BooleanSerializerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.005">
+  <properties/>
+  <testcase name="testSerializeNull()" classname="boconverter.BooleanSerializerTest" time="0.001"/>
+  <testcase name="testSerializeTrue()" classname="boconverter.BooleanSerializerTest" time="0.001"/>
+  <testcase name="testDeserializeFalse()" classname="boconverter.BooleanSerializerTest" time="0.001"/>
+  <testcase name="testDeserializeInvalidData()" classname="boconverter.BooleanSerializerTest" time="0.0"/>
+  <testcase name="testSerializeFalse()" classname="boconverter.BooleanSerializerTest" time="0.0"/>
+  <testcase name="testDeserializeTrue()" classname="boconverter.BooleanSerializerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

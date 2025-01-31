@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.LocationDataSerializerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.006">
+  <properties/>
+  <testcase name="testSerialize_ZeroValue()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_NaNValue()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NullValue()" classname="boconverter.LocationDataSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_NonNullValue()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NaNValue()" classname="boconverter.LocationDataSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_NullData()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NegativeInfinity()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testDeserialize_NegativeInfinity()" classname="boconverter.LocationDataSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_ValidData()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_PositiveInfinity()" classname="boconverter.LocationDataSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_PositiveInfinity()" classname="boconverter.LocationDataSerializerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

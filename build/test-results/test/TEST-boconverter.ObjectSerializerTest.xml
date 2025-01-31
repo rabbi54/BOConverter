@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="boconverter.ObjectSerializerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.025">
+  <properties/>
+  <testcase name="testGetSerializer_ValidClass()" classname="boconverter.ObjectSerializerTest" time="0.003"/>
+  <testcase name="testSerialize_NoAnnotatedFields()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_AnnotatedFields()" classname="boconverter.ObjectSerializerTest" time="0.007"/>
+  <testcase name="testGetSerializer_InaccessibleConstructor()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="testGetSerializer_WithNullSerializer()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="getType()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="getDefaultValue()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize()" classname="boconverter.ObjectSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NullObject()" classname="boconverter.ObjectSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_EmptyObject_HasIdentifierAndZeroLength()" classname="boconverter.ObjectSerializerTest" time="0.002"/>
+  <testcase name="testSerialize_NullString_ShouldReturnZeroLengthPrefix()" classname="boconverter.ObjectSerializerTest" time="0.003"/>
+  <testcase name="deserialize()" classname="boconverter.ObjectSerializerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
