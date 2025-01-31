@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="boconverter.ByteIntSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.005">
+<testsuite name="boconverter.ByteIntSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:43:44" hostname="Rownaks-MacBook-Air.local" time="0.004">
   <properties/>
   <testcase name="testDeserialize_MaxValueData()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
-  <testcase name="testDeserialize_ZeroData()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
-  <testcase name="testSerialize_ZeroValue()" classname="boconverter.ByteIntSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_ZeroData()" classname="boconverter.ByteIntSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_ZeroValue()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
   <testcase name="testDeserialize_MinValueData()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
   <testcase name="testSerialize_MaxValue()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
-  <testcase name="testSerialize_NullValue()" classname="boconverter.ByteIntSerializerTest" time="0.001"/>
-  <testcase name="testSerialize_NonNullValue()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
-  <testcase name="testDeserialize_ValidData()" classname="boconverter.ByteIntSerializerTest" time="0.001"/>
+  <testcase name="testSerialize_NullValue()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
+  <testcase name="testSerialize_NonNullValue()" classname="boconverter.ByteIntSerializerTest" time="0.001"/>
+  <testcase name="testDeserialize_ValidData()" classname="boconverter.ByteIntSerializerTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

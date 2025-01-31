@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="boconverter.StringSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.003">
+<testsuite name="boconverter.StringSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:43:44" hostname="Rownaks-MacBook-Air.local" time="0.003">
   <properties/>
   <testcase name="testDeserializeNullAnnotationDataClass()" classname="boconverter.StringSerializerTest" time="0.0"/>
-  <testcase name="testDeserializeNullData()" classname="boconverter.StringSerializerTest" time="0.001"/>
+  <testcase name="testDeserializeNullData()" classname="boconverter.StringSerializerTest" time="0.0"/>
   <testcase name="testSerializeWithLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.0"/>
-  <testcase name="testSerializeWithoutLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.001"/>
-  <testcase name="testDeserializeIncorrectLength()" classname="boconverter.StringSerializerTest" time="0.0"/>
+  <testcase name="testSerializeWithoutLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.0"/>
+  <testcase name="testDeserializeIncorrectLength()" classname="boconverter.StringSerializerTest" time="0.001"/>
   <testcase name="testDeserializeWithLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.0"/>
-  <testcase name="testDeserializeWithoutLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.0"/>
+  <testcase name="testDeserializeWithoutLengthPrefix()" classname="boconverter.StringSerializerTest" time="0.001"/>
   <testcase name="testSerializeNullValue()" classname="boconverter.StringSerializerTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

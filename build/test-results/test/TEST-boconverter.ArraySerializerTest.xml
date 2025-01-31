@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="boconverter.ArraySerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:31:24" hostname="Rownaks-MacBook-Air.local" time="0.043">
+<testsuite name="boconverter.ArraySerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-31T18:43:44" hostname="Rownaks-MacBook-Air.local" time="0.051">
   <properties/>
-  <testcase name="testObjectArraySerializationNoObjectLengthPrefix()" classname="boconverter.ArraySerializerTest" time="0.013"/>
+  <testcase name="testObjectArraySerializationNoObjectLengthPrefix()" classname="boconverter.ArraySerializerTest" time="0.014"/>
   <testcase name="testSingleElementDoubleArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.003"/>
-  <testcase name="testSingleElementTimeArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.003"/>
-  <testcase name="testObjectWhichSizeIsMoreThanTwoKB()" classname="boconverter.ArraySerializerTest" time="0.014"/>
+  <testcase name="testSingleElementTimeArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.002"/>
+  <testcase name="testObjectWhichSizeIsMoreThanTwoKB()" classname="boconverter.ArraySerializerTest" time="0.019"/>
   <testcase name="testDoubleArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.001"/>
-  <testcase name="testEmptyDoubleArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.002"/>
+  <testcase name="testEmptyDoubleArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.001"/>
   <testcase name="testEmptyTimeArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.003"/>
-  <testcase name="testTimeArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.001"/>
+  <testcase name="testTimeArraySerialization()" classname="boconverter.ArraySerializerTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
